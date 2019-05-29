@@ -2,7 +2,7 @@
   <div class="map-south-korea">
     <svg
       :viewBox="viewBox">
-      <g class="south-korea">
+      <g class="south-korea" v-if="this.topology">
         <path
           class="map-path ground-shadow"
           :d="pathShadow(this.topology.features[0])">
@@ -25,11 +25,12 @@ export default {
   name: 'MapSouthKorea',
   data() {
     return {
-      jsonContents : require("@/assets/topo/south-korea-topo.json"),
-      topology : null,
-      projection : null,
-      path : null,
-      pathShadow : null
+      jsonContents: require("@/assets/topo/south-korea-topo.json"),
+      topology: null,
+      projection: null,
+      path: null,
+      pathShadow: null,
+      elements: {}
     }
   },
   props: {
@@ -65,7 +66,7 @@ export default {
     this.init();
   },
   mounted() {
-    console.log(this.topology.features)
+    this.initZoomEvent();
   },
   methods: {
     init() {
@@ -73,7 +74,7 @@ export default {
       const bounds = d3.geoBounds(this.topology);
       const center = d3.geoCentroid(this.topology);
       const distance = d3.geoDistance(bounds[0], bounds[1]);
-      const scale = this.height / distance / Math.sqrt(2);
+      const scale = (this.height / distance / Math.sqrt(2)) * 1.8;
       this.projection = d3.geoMercator()
         .translate([this.width/2, this.height/2])
         .scale(scale)
@@ -83,6 +84,15 @@ export default {
         .translate([this.width/2+2, this.height/2+4])
         .scale(scale)
         .center(center));
+    },
+    initZoomEvent() {
+      const svg = d3.select(this.$el.querySelector("svg"));
+      const map = d3.select(".south-korea");
+      const zoom = d3.zoom().on("zoom", ()=>map.attr("transform", d3.event.transform));
+      svg.call(zoom);
+
+      //시작할때 확대되면서 시작
+      // zoom.scaleBy(svg.transition().duration(500), 2.0);
     }
   },
 }
@@ -96,7 +106,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
   }
   .map-path {
     fill: #15c78a;
