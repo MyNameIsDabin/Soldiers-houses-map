@@ -32,13 +32,13 @@ export default {
 <style scoped>
   .toolbar {
     display: flex;
-    flex-basis: 60px;
+    height: 40px;
     padding: 5px 20px;
     align-items: center;
     justify-content: space-between;
     background-color: #3c3c3c;
     color: white;
-    border-bottom: 3px solid #2626268f;
+    border-bottom: 1px solid #535353;
   }
   .toolbar .title {
     padding: 8px 0;

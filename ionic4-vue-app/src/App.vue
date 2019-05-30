@@ -1,10 +1,12 @@
 <template>
   <div id="main">
     <map-south-korea :width="320" :height="568"></map-south-korea>
-    <div class="bottom-menu" :class="{'opened':isOpenHousesListView}">
+    <div class="list-view-bar" :class="{'opened':isOpenHousesListView}">
       <toolbar></toolbar>
       <list-view-houses class="list-view-wrapper"></list-view-houses>
     </div>
+    <bottom-menu>
+    </bottom-menu>
   </div>
 </template>
 <script>
@@ -16,12 +18,13 @@ import MapSouthKorea from './components/MapSouthKorea'
 import SearchBar from './components/SearchBar'
 import Toolbar from './components/Toolbar'
 import ListViewHouses from './components/ListViewHouses.vue'
+import BottomMenu from './components/BottomMenu.vue'
 
-import datas from '@/assets/data/datas.json';
+// import datas from '@/assets/data/datas.json';
 export default {
   name: 'App',
   components : {
-    MapSouthKorea, SearchBar, Toolbar, ListViewHouses
+    MapSouthKorea, SearchBar, Toolbar, ListViewHouses, BottomMenu
   },
   data () {
     return {
@@ -34,7 +37,7 @@ export default {
   },
   async mounted() {
     try {
-      const google = await gmapsInit();
+      await gmapsInit();
       // 에라이 ㅅㅂ 공공데이터 수준.. 위경도 따로 받아서 저장했음..
       // const map = new google.maps.Map(this.$el);
       //   console.log(datas)
@@ -102,7 +105,7 @@ export default {
     width: 100%;
   }
   body {
-    background: #9cdfec;
+    background-color: #9cdfec;
   }
   #main {
     display: flex;
@@ -113,15 +116,15 @@ export default {
     overflow: auto;
     height: 100%;
   }
-  .bottom-menu {
+  .list-view-bar {
     position: fixed;
     width: 100%;
     height: 100%;
-    top: calc(100% - 45px);
-    transition: all 0.5s ease;
+    top: calc(100% - 89px);
+    transition: all 0.5s cubic-bezier(0.42, 0.04, 0.16, 1);
   }
-  .bottom-menu.opened {
-    top: calc(50%);
-    height: calc(50% - 45px);
+  .list-view-bar.opened {
+    top: calc(40%);
+    height: calc(60% - 89px);
   }
 </style>

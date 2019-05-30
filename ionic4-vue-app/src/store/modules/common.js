@@ -1,12 +1,17 @@
 import Vue from 'vue';
+import * as config from '@/config';
 
 const state = {
-  isOpenHousesListView: false
+  isOpenHousesListView: false,
+  selectedMenu: config.MENU_MAP
 }
 
 const mutations = {
-  TOGGLE_HOUSES_LIST_VIEW (state) {
+  TOGGLE_HOUSES_LIST_VIEW(state) {
     state.isOpenHousesListView = !state.isOpenHousesListView;
+  },
+  SET_SELECTED_MENU(state, payload) {
+    state.selectedMenu = payload;
   }
   // SET_BOARD_SIZE (state, payload) {
   //   Vue.set(state.boardSize, 'width', payload[0]);

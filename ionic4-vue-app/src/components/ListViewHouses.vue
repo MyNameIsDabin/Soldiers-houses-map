@@ -1,6 +1,10 @@
 <template>
   <div class="list-view-houses">
-    <div v-for="house in houses" class="item">
+    <div
+      class="item"
+      v-for="house in houses"
+      @click="SET_SELECTED_HOUSE(house)"
+      :class="{'selected':house===selectedHouse}">
       <div>
         <div class="location">
           {{house.location}}
@@ -13,7 +17,9 @@
         </div>
       </div>
     </div>
-    <infinite-loading @infinite="loadMore">
+    <infinite-loading 
+      @infinite="loadMore"
+      spinner="spiral">
     </infinite-loading>
   </div>
 </template>
@@ -34,16 +40,21 @@ export default {
   },
   computed: {
     ...mapState({
-      'houses' : state => state.houses.houses
+      'houses' : state => state.houses.houses,
+      'selectedHouse' : state => state.houses.selectedHouse
     })
   },
   methods: {
+    ...mapMutations(['SET_SELECTED_HOUSE']),
     ...mapActions(['requestMoreHouses']),
     loadMore($state) {
       this.requestMoreHouses(()=>{
         if ($state)
           $state.loaded();
       });
+    },
+    selectHouse(house) {
+      this.SET_SELECTED_HOUSE(house);
     }
   }
 }
@@ -54,16 +65,18 @@ export default {
     color: white;
   }
   .location {
-    font-size: 1.0rem;
     font-weight: bold;
   }
   .item {
     padding: 8px 14px;
     padding-top: 0px;
+    transition: all 0.25s ease;
   }
   .item > div {
     padding-bottom: 8px;
     border-bottom: 1px solid #535353;
   }
-  .slide-up { transition: all 0.25s; } .slide-up-enter-active { transition: all 0.25s ease; } .slide-up-leave-active { transition: all 0.25s cubic-bezier(1, 0.5, 0.8, 1); } .slide-up-enter, .slide-up-leave-active { opacity: 0; transform: translateY(100%); }
+  .selected {
+    color: #10d8ac;
+  }
 </style>

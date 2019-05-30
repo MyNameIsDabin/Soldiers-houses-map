@@ -1,1 +1,2 @@
-// export const SOUTH_KOREA_TOPO_JSON = "@/assets/topo/south-korea-topo.json";
+export const MENU_HOME = 0;
+export const MENU_MAP = 1;

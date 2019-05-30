@@ -4,13 +4,17 @@ import gmapsInit from '@/utils/gmaps';
 
 const state = {
   houseJSON : houseJSON,
-  houses: []
+  houses: [],
+  selectedHouse: null
 }
 
 const mutations = {
-  SET_HOUSES (state, payload) {
+  SET_HOUSES(state, payload) {
     Vue.set(state, 'houses', payload);
   },  
+  SET_SELECTED_HOUSE(state, payload) {
+    Vue.set(state, 'selectedHouse', payload);
+  }
 }
 
 const actions = {

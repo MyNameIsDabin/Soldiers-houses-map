@@ -12,6 +12,26 @@
           :d="path(this.topology.features[0])">
         </path>
       </g>
+      <g class="buliding-container">
+        <ellipse class="house-shadow"  
+          v-for="(building, idx) in housesJSON"
+          :cx="projection([building.lng, building.lat])[0]-0.5"
+          :cy="projection([building.lng, building.lat])[1]+7"
+          rx="8" 
+          ry="4"
+          :class="{'selected':selectedHouse && (selectedHouse.name===building.name)}">
+        </ellipse>
+        <foreignObject 
+          v-for="(building, idx) in housesJSON"
+          width="20"
+          height="20"
+          :x="projection([building.lng, building.lat])[0]-9.5"
+          :y="projection([building.lng, building.lat])[1]-10"
+          :key="idx"
+          :class="{'selected': selectedHouse && (selectedHouse.name===building.name)}">
+          <font-awesome-icon icon="home" class="home-icon"/>
+        </foreignObject>
+      </g>
     </svg>
   </div>
 </template>
@@ -20,6 +40,7 @@ import * as d3 from 'd3'
 import * as topojson from 'topojson'
 import * as config from '../config'
 import { mapState, mapActions } from 'vuex'
+import housesJSON from '@/assets/data/house_sample.json';
 
 export default {
   name: 'MapSouthKorea',
@@ -30,7 +51,8 @@ export default {
       projection: null,
       path: null,
       pathShadow: null,
-      elements: {}
+      elements: {},
+      housesJSON
     }
   },
   props: {
@@ -58,6 +80,9 @@ export default {
     }
   },
   computed: {
+    ...mapState({
+      'selectedHouse' : state => state.houses.selectedHouse
+    }),
     viewBox() {
       return `0 0 ${this.width} ${this.height}`;
     }
@@ -66,7 +91,7 @@ export default {
     this.init();
   },
   mounted() {
-    this.initZoomEvent();
+    this.initZoomEvent([".south-korea", ".buliding-container"]);
   },
   methods: {
     init() {
@@ -85,10 +110,11 @@ export default {
         .scale(scale)
         .center(center));
     },
-    initZoomEvent() {
+    initZoomEvent(queries) {
       const svg = d3.select(this.$el.querySelector("svg"));
-      const map = d3.select(".south-korea");
-      const zoom = d3.zoom().on("zoom", ()=>map.attr("transform", d3.event.transform));
+      const zoom = d3.zoom().on("zoom", ()=>{
+        queries.forEach(query=>d3.select(query).attr("transform", d3.event.transform));
+      });
       svg.call(zoom);
 
       //시작할때 확대되면서 시작
@@ -114,6 +140,18 @@ export default {
   .ground-shadow {
     fill: #2d7f8a96;
     stroke: none;
+  }
+  .building-icon {
+    font-family:FontAwesome;
+  }
+  .home-icon path {
+    fill: #ffffff;
+  }
+  .house-shadow {
+    fill: #00000096;
+  }
+  .selected path {
+    fill: red;
   }
 </style>
 
