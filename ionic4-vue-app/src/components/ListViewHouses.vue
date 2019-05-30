@@ -13,7 +13,7 @@
           {{house.name}}
         </div>
         <div class="date">
-          {{house.date}}
+          {{house.date}}~
         </div>
       </div>
     </div>

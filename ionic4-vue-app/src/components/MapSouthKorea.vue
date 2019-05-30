@@ -13,28 +13,19 @@
         </path>
       </g>
       <g class="buliding-container">
-        <ellipse class="house-shadow"  
-          v-for="(building, idx) in housesJSON"
-          :cx="projection([building.lng, building.lat])[0]-0.5"
-          :cy="projection([building.lng, building.lat])[1]+7"
-          rx="8" 
-          ry="4"
-          :name="building.name"
-          :class="{'selected':selectedHouse && (selectedHouse.name===building.name)}">
-        </ellipse>
         <foreignObject 
           v-for="(building, idx) in housesJSON"
-          width="20"
-          height="20"
-          :x="projection([building.lng, building.lat])[0]-9.5"
-          :y="projection([building.lng, building.lat])[1]-10"
+          :width="30"
+          :height="30"
+          :x="projection([building.lng, building.lat])[0]-9.1"
+          :y="projection([building.lng, building.lat])[1]-15"
           :key="idx"
           :name="building.name"
           class="home-icon"
-          :class="{
-            'selected': selectedHouse && (selectedHouse.name===building.name)
-          }">
-          <font-awesome-icon icon="home"/>
+          :class="{'selected': selectedHouse && (selectedHouse.name===building.name)}">
+          <font-awesome-layers>
+            <font-awesome-icon icon="home" :style="{'transform': `scale(${1/zoomScale})`, 'transform-origin': '50% 50%'}"/>
+          </font-awesome-layers>
         </foreignObject>
       </g>
     </svg>
@@ -57,7 +48,8 @@ export default {
       path: null,
       pathShadow: null,
       elements: {},
-      housesJSON
+      housesJSON,
+      zoomScale: 1
     }
   },
   props: {
@@ -117,8 +109,11 @@ export default {
     },
     initZoomEvent(queries) {
       const svg = d3.select(this.$el.querySelector("svg"));
-      const zoom = d3.zoom().on("zoom", ()=>{
-        queries.forEach(query=>d3.select(query).attr("transform", d3.event.transform));
+      const zoom = d3.zoom().scaleExtent([1.0, 10]).on("zoom", ()=>{
+        queries.forEach(query=>{
+          this.zoomScale = d3.event.transform.k;
+          d3.select(query).attr("transform", d3.event.transform);
+        });
       });
       svg.call(zoom);
 
@@ -132,7 +127,6 @@ export default {
       if (icon) {
         icon.raise();
       }
-      // console.log(house);
     }
   }
 }

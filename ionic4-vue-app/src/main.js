@@ -8,7 +8,8 @@ import {
   faCaretDown,
   faMapMarkedAlt,
   faHome,
-  faBuilding } from '@fortawesome/free-solid-svg-icons'
+  faBuilding,
+  faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import InfiniteScroll from 'vue-infinite-scroll'
 
@@ -17,6 +18,7 @@ library.add(faCaretDown)
 library.add(faMapMarkedAlt)
 library.add(faHome)
 library.add(faBuilding)
+library.add(faCircle)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(InfiniteScroll)
@@ -32,3 +34,4 @@ new Vue({
   },
   render: h => h(App)
 }).$mount('#app')
+
