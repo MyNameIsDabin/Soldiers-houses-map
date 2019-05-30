@@ -19,6 +19,7 @@
           :cy="projection([building.lng, building.lat])[1]+7"
           rx="8" 
           ry="4"
+          :name="building.name"
           :class="{'selected':selectedHouse && (selectedHouse.name===building.name)}">
         </ellipse>
         <foreignObject 
@@ -28,8 +29,12 @@
           :x="projection([building.lng, building.lat])[0]-9.5"
           :y="projection([building.lng, building.lat])[1]-10"
           :key="idx"
-          :class="{'selected': selectedHouse && (selectedHouse.name===building.name)}">
-          <font-awesome-icon icon="home" class="home-icon"/>
+          :name="building.name"
+          class="home-icon"
+          :class="{
+            'selected': selectedHouse && (selectedHouse.name===building.name)
+          }">
+          <font-awesome-icon icon="home"/>
         </foreignObject>
       </g>
     </svg>
@@ -121,6 +126,15 @@ export default {
       // zoom.scaleBy(svg.transition().duration(500), 2.0);
     }
   },
+  watch: {
+    selectedHouse(house) {
+      const icon = d3.select(`.home-icon[name="${house.name}"]`);
+      if (icon) {
+        icon.raise();
+      }
+      // console.log(house);
+    }
+  }
 }
 </script>
 <style scoped>
@@ -151,7 +165,10 @@ export default {
     fill: #00000096;
   }
   .selected path {
-    fill: red;
+    fill: #ffce31;
+  }
+  path {
+    transition: all 0.15s ease;
   }
 </style>
 
