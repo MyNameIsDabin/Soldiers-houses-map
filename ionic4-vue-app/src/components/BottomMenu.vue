@@ -62,7 +62,7 @@ export default {
     height: 100%;
   }
   .button span {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
   }
   .selected {
     color: #ffce31;

@@ -1,5 +1,6 @@
 <template>
   <div id="main">
+    <search-bar></search-bar>
     <map-south-korea :width="320" :height="568"></map-south-korea>
     <div class="list-view-bar" :class="{'opened':isOpenHousesListView}">
       <toolbar></toolbar>
@@ -105,7 +106,7 @@ export default {
     width: 100%;
   }
   body {
-    background-color: #464646;
+    background-color: white;
   }
   #main {
     display: flex;

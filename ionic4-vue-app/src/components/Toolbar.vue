@@ -39,6 +39,7 @@ export default {
     background-color: #3c3c3c;
     color: white;
     border-bottom: 1px solid #535353;
+    box-shadow: 0px -1px 5px #4a4a4a;
   }
   .toolbar .title {
     padding: 8px 0;

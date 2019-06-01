@@ -10,7 +10,8 @@ import {
   faHome,
   faBuilding,
   faCircle,
-  faPhone } from '@fortawesome/free-solid-svg-icons'
+  faPhone,
+  faSearch } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import InfiniteScroll from 'vue-infinite-scroll'
 
@@ -21,6 +22,7 @@ library.add(faHome)
 library.add(faBuilding)
 library.add(faCircle)
 library.add(faPhone)
+library.add(faSearch)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(InfiniteScroll)
