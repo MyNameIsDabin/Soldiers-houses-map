@@ -15,6 +15,15 @@
         <div class="date">
           {{house.date}}~
         </div>
+        <div class="tel">
+          <span>
+            <font-awesome-icon icon="phone"/>
+            {{house.tel}}
+          </span>
+          <span>
+            (배정세대수 {{house.count}})
+          </span>
+        </div>
       </div>
     </div>
     <infinite-loading 
