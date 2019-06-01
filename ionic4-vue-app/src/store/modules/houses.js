@@ -28,13 +28,13 @@ const actions = {
   requestMoreHouses({ state, commit }, payload) {
     setTimeout(() => {
       const temp = [];
-      for (let i=0; i<10; i++) {
-        const house = state.searchedHouses[statesearchedHouses.length+i];
+      for (let i=0; i<5; i++) {
+        const house = state.searchedHouses[state.slicedHouses.length+i];
         if (house) {
           temp.push(house);
         }
       }
-      commit('SET_SLICED_HOUSES', state.searchedHouses.concat(temp));
+      commit('SET_SLICED_HOUSES', state.slicedHouses.concat(temp));
       payload();
     }, 1500);
   }

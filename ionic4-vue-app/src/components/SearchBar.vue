@@ -27,11 +27,13 @@ export default {
     })
   },
   methods: {
-    ...mapMutations(['SET_SEARCH_TEXT', 'SET_SEARCHED_HOUSES']),
+    ...mapMutations(['SET_SEARCH_TEXT', 'SET_SEARCHED_HOUSES', 'SET_SLICED_HOUSES']),
     search(e) {
       const text = e.target.value;
+      const searchedHouses = this.houses.filter(house=>house.location.includes(text));
       this.SET_SEARCH_TEXT(text);
-      this.SET_SEARCHED_HOUSES(this.houses.filter(house=>house.location.includes(text)));
+      this.SET_SLICED_HOUSES(searchedHouses.slice(0, 5));
+      this.SET_SEARCHED_HOUSES(searchedHouses);
     }
   }
 }

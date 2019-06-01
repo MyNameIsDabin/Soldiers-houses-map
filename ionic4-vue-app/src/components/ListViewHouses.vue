@@ -27,6 +27,7 @@
       </div>
     </div>
     <infinite-loading 
+      v-show="slicedHouses.length < searchedHouses.length"
       @infinite="loadMore"
       spinner="spiral">
     </infinite-loading>
@@ -57,12 +58,13 @@ export default {
     })
   },
   methods: {
-    ...mapMutations(['SET_SELECTED_HOUSE']),
+    ...mapMutations(['SET_SELECTED_HOUSE', 'SET_SLICED_HOUSES']),
     ...mapActions(['requestMoreHouses']),
     loadMore($state) {
       this.requestMoreHouses(()=>{
-        if ($state)
+        if ($state) {
           $state.loaded();
+        }
       });
     },
     selectHouse(house) {

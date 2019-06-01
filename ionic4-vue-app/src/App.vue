@@ -38,7 +38,7 @@ export default {
   },
   async mounted() {
     try {
-      await gmapsInit();
+      // await gmapsInit();
       // 에라이 ㅅㅂ 공공데이터 수준.. 위경도 따로 받아서 저장했음..
       // const map = new google.maps.Map(this.$el);
       //   console.log(datas)
