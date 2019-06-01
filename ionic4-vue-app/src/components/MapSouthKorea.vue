@@ -165,8 +165,8 @@ export default {
         .attr("height", 30)
         .attr("x", d=>this.projection([d.lng, d.lat])[0]-9)
         .attr("y", d=>this.projection([d.lng, d.lat])[1]-15)
-        .appned("xhtml:div")
-        .html(fontHTML)
+        // .appned("xhtml:div")
+        // .html(fontHTML)
     }
   },
   watch: {
@@ -190,13 +190,13 @@ export default {
     justify-content: center;
   }
   .south-korea >>> .map-path {
-    fill: #15c78a;
-    stroke: white;
-    stroke-width: 0.1px;
+    fill: #fff;
+    stroke: #9c9c9c;
+    stroke-width: 1px;
   }
   .south-korea >>> text.region {
     text-anchor: middle;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
   }
   .ground-shadow {
     fill: #2d7f8a96;

@@ -78,7 +78,6 @@ export default {
   }
   .item {
     padding: 8px 14px;
-    transition: all 0.25s ease;
   }
   .item > div {
     padding-bottom: 8px;
