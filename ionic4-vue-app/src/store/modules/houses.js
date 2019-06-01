@@ -3,10 +3,10 @@ import houseJSON from '@/assets/data/house_sample.json';
 import gmapsInit from '@/utils/gmaps';
 
 const state = {
-  houseJSON : houseJSON.reverse(),
-  houses: [],
+  houses: houseJSON.reverse(),
   selectedHouse: null,
-  searchedHouses: []
+  searchedHouses: [],
+  slicedHouses: []    //위의 검색된 분양목록(searchedHouses) 에서 10개씩 뽑아서 리스트뷰에 표츌할 것
 }
 
 const mutations = {
@@ -18,6 +18,9 @@ const mutations = {
   },
   SET_SEARCHED_HOUSES(state, payload) {
     Vue.set(state, 'searchedHouses', payload);
+  },
+  SET_SLICED_HOUSES(state, payload) {
+    Vue.set(state, 'slicedHouses', payload);
   }
 }
 
@@ -25,13 +28,13 @@ const actions = {
   requestMoreHouses({ state, commit }, payload) {
     setTimeout(() => {
       const temp = [];
-      for (let i=0; i <20; i++) {
-        const house = houseJSON[state.houses.length+i];
+      for (let i=0; i<10; i++) {
+        const house = state.searchedHouses[statesearchedHouses.length+i];
         if (house) {
           temp.push(house);
         }
       }
-      commit('SET_HOUSES', state.houses.concat(temp));
+      commit('SET_SLICED_HOUSES', state.searchedHouses.concat(temp));
       payload();
     }, 1500);
   }

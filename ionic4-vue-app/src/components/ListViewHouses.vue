@@ -2,7 +2,7 @@
   <div class="list-view-houses">
     <div
       class="item"
-      v-for="house in searchedHouses"
+      v-for="house in slicedHouses"
       @click="SET_SELECTED_HOUSE(house)"
       :class="{'selected':house===selectedHouse}">
       <div>
@@ -52,6 +52,7 @@ export default {
       'houses' : state => state.houses.houses,
       'selectedHouse' : state => state.houses.selectedHouse,
       'searchedHouses' : state => state.houses.searchedHouses,
+      'slicedHouses' : state => state.houses.slicedHouses,
       'searchText' : state => state.common.searchText
     })
   },
