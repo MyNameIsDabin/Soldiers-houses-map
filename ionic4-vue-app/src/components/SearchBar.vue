@@ -4,7 +4,11 @@
       <span>
         <font-awesome-icon icon="search"/>
       </span>
-      <input type="search" placeholder="시,도">
+      <input 
+        type="search"
+        placeholder="시,도"
+        :value="searchText"
+        @input.stop="search">
     </div>
   </div>
 </template>
@@ -18,11 +22,17 @@ export default {
   },
   computed: {
     ...mapState({
+      'houses' : state => state.houses.houses,
       'searchText' : state => state.common.searchText
     })
   },
   methods: {
-    ...mapMutations(['SET_SEARCH_TEXT'])
+    ...mapMutations(['SET_SEARCH_TEXT', 'SET_SEARCHED_HOUSES']),
+    search(e) {
+      const text = e.target.value;
+      this.SET_SEARCH_TEXT(text);
+      this.SET_SEARCHED_HOUSES(this.houses.filter(house=>house.location.includes(text)));
+    }
   }
 }
 </script>

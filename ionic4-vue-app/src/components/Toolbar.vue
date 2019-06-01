@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar" @click="TOGGLE_HOUSES_LIST_VIEW">
     <span class="title">
-      군 주택 특별공급 | {{this.houseJSON.length}}개
+      군 주택 특별공급 | {{this.searchedHouses.length}}개
     </span>
     <span class="toggle-list-view">
       <font-awesome-icon v-if="!isOpenHousesListView" icon="caret-up"/>
@@ -20,7 +20,7 @@ export default {
   computed: {
     ...mapState({
       'isOpenHousesListView' : state => state.common.isOpenHousesListView,
-      'houses' : state => state.houses.houses,
+      'searchedHouses' : state => state.houses.searchedHouses,
       'houseJSON' : state => state.houses.houseJSON
     })
   },

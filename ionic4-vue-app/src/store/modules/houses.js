@@ -5,7 +5,8 @@ import gmapsInit from '@/utils/gmaps';
 const state = {
   houseJSON : houseJSON.reverse(),
   houses: [],
-  selectedHouse: null
+  selectedHouse: null,
+  searchedHouses: []
 }
 
 const mutations = {
@@ -14,6 +15,9 @@ const mutations = {
   },  
   SET_SELECTED_HOUSE(state, payload) {
     Vue.set(state, 'selectedHouse', payload);
+  },
+  SET_SEARCHED_HOUSES(state, payload) {
+    Vue.set(state, 'searchedHouses', payload);
   }
 }
 
