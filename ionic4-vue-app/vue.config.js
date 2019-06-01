@@ -1,4 +1,7 @@
 module.exports = {
   outputDir: 'www',
-  assetsDir: './'
+  assetsDir: './',
+  transpileDependencies: [
+    /\bvue-awesome\b/
+  ]
 }

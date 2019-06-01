@@ -17,7 +17,7 @@
         </div>
         <div class="tel">
           <span>
-            <font-awesome-icon icon="phone"/>
+            <v-icon name="phone"/>
             {{house.tel}}
           </span>
           <span>

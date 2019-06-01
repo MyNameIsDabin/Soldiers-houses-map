@@ -5,7 +5,7 @@
       v-for="button in buttonList"
       :class="{'selected':button.idx===selectedMenu}"
       @click="SET_SELECTED_MENU(button.idx)">
-      <font-awesome-icon :icon="button.icon"/>
+      <v-icon :name="button.icon" scale="1.5"/>
       <span>{{button.text}}</span>
     </span>
   </div>

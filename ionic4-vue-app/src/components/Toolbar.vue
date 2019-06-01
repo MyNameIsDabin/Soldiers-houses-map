@@ -4,8 +4,8 @@
       군 주택 특별공급 | {{this.searchedHouses.length}}개
     </span>
     <span class="toggle-list-view">
-      <font-awesome-icon v-if="!isOpenHousesListView" icon="caret-up"/>
-      <font-awesome-icon v-else icon="caret-down"/>
+      <v-icon v-if="!isOpenHousesListView" name="caret-up"/>
+      <v-icon v-else name="caret-down"/>
     </span>
   </div>
 </template>

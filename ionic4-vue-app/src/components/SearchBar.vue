@@ -2,7 +2,7 @@
   <div class="searchbar">
     <div class="input">
       <span>
-        <font-awesome-icon icon="search"/>
+        <v-icon name="search"/>
       </span>
       <input 
         type="search"
