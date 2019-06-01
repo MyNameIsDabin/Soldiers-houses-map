@@ -3,7 +3,7 @@ import houseJSON from '@/assets/data/house_sample.json';
 import gmapsInit from '@/utils/gmaps';
 
 const state = {
-  houseJSON : houseJSON,
+  houseJSON : houseJSON.reverse(),
   houses: [],
   selectedHouse: null
 }
