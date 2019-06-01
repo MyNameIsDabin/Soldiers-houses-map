@@ -9,11 +9,20 @@
   </div>
 </template>
 <script>
+import { mapState, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'SearchBar',
   data() {
     return {
     };
+  },
+  computed: {
+    ...mapState({
+      'searchText' : state => state.common.searchText
+    })
+  },
+  methods: {
+    ...mapMutations(['SET_SEARCH_TEXT'])
   }
 }
 </script>

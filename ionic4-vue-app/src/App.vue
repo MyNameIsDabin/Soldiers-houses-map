@@ -106,7 +106,7 @@ export default {
     width: 100%;
   }
   body {
-    background-color: #464646;
+    background-color: #414a49;
   }
   #main {
     display: flex;

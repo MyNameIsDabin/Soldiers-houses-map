@@ -190,9 +190,9 @@ export default {
     justify-content: center;
   }
   .south-korea >>> .map-path {
-    fill: #fff;
-    stroke: #9c9c9c;
-    stroke-width: 1px;
+    fill: #14b191;
+    stroke: #ffffff;
+    stroke-width: 1.5px;
   }
   .south-korea >>> text.region {
     text-anchor: middle;
