@@ -2,7 +2,7 @@
   <div class="map-south-korea">
     <svg
       :viewBox="viewBox">
-      <g class="south-korea" v-if="this.topology">
+      <g class="south-korea">
       </g>
       <g class="buliding-container">
         <!-- <foreignObject 
@@ -34,7 +34,14 @@ export default {
   name: 'MapSouthKorea',
   data() {
     return {
-      jsonContents: require("@/assets/topo/assembly-precinct-20-topo.json"),
+      municipalities : {
+        'jsonContents' : require('@/assets/topo/skorea-municipalities-2018-topo.json'),
+        'topology' : null
+      },
+      provinces : {
+        'jsonContents' : require('@/assets/topo/skorea-provinces-2018-topo-simple.json'),
+        'topology' : null
+      },
       topology: null,
       projection: null,
       path: null,
@@ -85,9 +92,12 @@ export default {
   },
   methods: {
     init() {
-      this.topology = topojson.feature(this.jsonContents, this.jsonContents.objects['precincts']);
-      const bounds = d3.geoBounds(this.topology);
-      const center = d3.geoCentroid(this.topology);
+      this.provinces.topology = topojson.feature(
+        this.provinces.jsonContents, 
+        this.provinces.jsonContents.objects['skorea_provinces_2018_geo']);
+
+      const bounds = d3.geoBounds(this.provinces.topology);
+      const center = d3.geoCentroid(this.provinces.topology);
       const distance = d3.geoDistance(bounds[0], bounds[1]);
       const scale = (this.height / distance / Math.sqrt(2)) * 1.8;
       this.projection = d3.geoMercator()
@@ -117,13 +127,28 @@ export default {
       // this.drawHouseIcons();
     },
     drawGround() {
+      const features = this.provinces.topology.features;
+
       d3.select(".south-korea")
         .selectAll("path")
-        .data(this.topology.features)
+        .data(features)
         .enter()
         .append("path")
         .attr("class", "map-path ground")
         .attr("d", this.path);
+
+      d3.select(".south-korea")
+        .selectAll("text")
+        .data(features)
+        .enter()
+        .append("text")
+        .attr("transform",d=>{
+          let centroid = this.path.centroid(d);
+          if (d.properties.name === '경기도') centroid[1] -= 20; 
+          else if (d.properties.name === '충청남도') centroid[1] += 10;
+          return "translate(" + centroid + ")"})
+        .attr("class", "region")
+        .text(d=>d.properties.name);
     },
     drawHouseIcons() {
       const fontHTML = `
@@ -167,7 +192,11 @@ export default {
   .south-korea >>> .map-path {
     fill: #15c78a;
     stroke: white;
-    stroke-width: 0.5px;
+    stroke-width: 0.1px;
+  }
+  .south-korea >>> text.region {
+    text-anchor: middle;
+    font-size: 0.7rem;
   }
   .ground-shadow {
     fill: #2d7f8a96;
