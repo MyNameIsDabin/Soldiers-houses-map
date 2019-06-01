@@ -34,7 +34,7 @@ export default {
   name: 'MapSouthKorea',
   data() {
     return {
-      jsonContents: require("@/assets/topo/south-korea-topo2019.json"),
+      jsonContents: require("@/assets/topo/assembly-precinct-20-topo.json"),
       topology: null,
       projection: null,
       path: null,
@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     init() {
-      this.topology = topojson.feature(this.jsonContents, this.jsonContents.objects['south-korea-geo2019']);
+      this.topology = topojson.feature(this.jsonContents, this.jsonContents.objects['precincts']);
       const bounds = d3.geoBounds(this.topology);
       const center = d3.geoCentroid(this.topology);
       const distance = d3.geoDistance(bounds[0], bounds[1]);
