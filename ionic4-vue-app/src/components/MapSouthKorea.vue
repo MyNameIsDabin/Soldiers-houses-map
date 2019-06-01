@@ -3,17 +3,9 @@
     <svg
       :viewBox="viewBox">
       <g class="south-korea" v-if="this.topology">
-        <path
-          class="map-path ground-shadow"
-          :d="pathShadow(this.topology.features[0])">
-        </path>
-        <path
-          class="map-path ground"
-          :d="path(this.topology.features[0])">
-        </path>
       </g>
       <g class="buliding-container">
-        <foreignObject 
+        <!-- <foreignObject 
           v-for="(building, idx) in housesJSON"
           :width="30"
           :height="30"
@@ -23,10 +15,10 @@
           :name="building.name"
           class="home-icon"
           :class="{'selected': selectedHouse && (selectedHouse.name===building.name)}">
-          <font-awesome-layers>
+          <div>
             <font-awesome-icon icon="home" :style="{'transform': `scale(${1/zoomScale})`, 'transform-origin': '50% 50%'}"/>
-          </font-awesome-layers>
-        </foreignObject>
+          </div>
+        </foreignObject> -->
       </g>
     </svg>
   </div>
@@ -42,7 +34,7 @@ export default {
   name: 'MapSouthKorea',
   data() {
     return {
-      jsonContents: require("@/assets/topo/south-korea-topo.json"),
+      jsonContents: require("@/assets/topo/south-korea-topo2019.json"),
       topology: null,
       projection: null,
       path: null,
@@ -89,10 +81,11 @@ export default {
   },
   mounted() {
     this.initZoomEvent([".south-korea", ".buliding-container"]);
+    this.drawMap();
   },
   methods: {
     init() {
-      this.topology = topojson.feature(this.jsonContents, this.jsonContents.objects['south-korea-geo']);
+      this.topology = topojson.feature(this.jsonContents, this.jsonContents.objects['south-korea-geo2019']);
       const bounds = d3.geoBounds(this.topology);
       const center = d3.geoCentroid(this.topology);
       const distance = d3.geoDistance(bounds[0], bounds[1]);
@@ -109,9 +102,8 @@ export default {
     },
     initZoomEvent(queries) {
       const svg = d3.select(this.$el.querySelector("svg"));
-      const zoom = d3.zoom().scaleExtent([1.0, 10]).on("zoom", ()=>{
+      const zoom = d3.zoom().scaleExtent([0.8, 10]).on("zoom", ()=>{
         queries.forEach(query=>{
-          this.zoomScale = d3.event.transform.k;
           d3.select(query).attr("transform", d3.event.transform);
         });
       });
@@ -119,6 +111,37 @@ export default {
 
       //시작할때 확대되면서 시작
       // zoom.scaleBy(svg.transition().duration(500), 2.0);
+    },
+    drawMap() {
+      this.drawGround();
+      // this.drawHouseIcons();
+    },
+    drawGround() {
+      d3.select(".south-korea")
+        .selectAll("path")
+        .data(this.topology.features)
+        .enter()
+        .append("path")
+        .attr("class", "map-path ground")
+        .attr("d", this.path);
+    },
+    drawHouseIcons() {
+      const fontHTML = `
+      <font-awesome-icon icon="home" 
+        :style="{'transform': 'scale(${1/this.zoomScale})'}, 
+        'transform-origin': '50% 50%'}"/>`;
+
+      d3.select(".buliding-container")
+        .selectAll("foreignObject")
+        .data(housesJSON)
+        .enter()
+        .append("foreignObject")
+        .attr("width", 30)
+        .attr("height", 30)
+        .attr("x", d=>this.projection([d.lng, d.lat])[0]-9)
+        .attr("y", d=>this.projection([d.lng, d.lat])[1]-15)
+        .appned("xhtml:div")
+        .html(fontHTML)
     }
   },
   watch: {
@@ -141,9 +164,10 @@ export default {
     align-items: center;
     justify-content: center;
   }
-  .map-path {
+  .south-korea >>> .map-path {
     fill: #15c78a;
     stroke: white;
+    stroke-width: 0.5px;
   }
   .ground-shadow {
     fill: #2d7f8a96;
