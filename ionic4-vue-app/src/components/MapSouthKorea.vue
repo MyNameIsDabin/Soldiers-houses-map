@@ -106,7 +106,7 @@ export default {
         .center(center);
       this.path = d3.geoPath().projection(this.projection);
       this.pathShadow = d3.geoPath().projection(d3.geoMercator()
-        .translate([this.width/2+2, this.height/2+4])
+        .translate([this.width/2+4, this.height/2+8])
         .scale(scale)
         .center(center));
     },
@@ -130,14 +130,23 @@ export default {
       const features = this.provinces.topology.features;
 
       d3.select(".south-korea")
-        .selectAll("path")
+        .selectAll("path.ground-shadow")
+        .data(features)
+        .enter()
+        .append("path")
+        .attr("class", "ground-shadow")
+        .attr("d", this.pathShadow);
+
+      d3.select(".south-korea")
+        .selectAll("path.ground")
         .data(features)
         .enter()
         .append("path")
         .attr("class", "map-path ground")
         .attr("d", this.path);
 
-      d3.select(".south-korea")
+      const textWidth = [];
+      const texts = d3.select(".south-korea")
         .selectAll("text")
         .data(features)
         .enter()
@@ -148,7 +157,30 @@ export default {
           else if (d.properties.name === '충청남도') centroid[1] += 10;
           return "translate(" + centroid + ")"})
         .attr("class", "region")
-        .text(d=>d.properties.name);
+        .text(d=>d.properties.name)
+        .each(function(d, i){
+          textWidth.push(this.getComputedTextLength()+14);
+        });
+
+      d3.select(".south-korea")
+        .selectAll("rect")
+        .data(features)
+        .enter()
+        .append("rect")
+        .attr("x", (d, i)=>this.path.centroid(d)[0]-textWidth[i]/2)
+        .attr("y", d=>{
+          let moveY = this.path.centroid(d)[1]-11;
+          if (d.properties.name === '경기도') moveY -= 20; 
+          else if (d.properties.name === '충청남도') moveY += 10;
+          return moveY;
+        })
+        .attr("rx", 5)
+        .attr("ry", 5)
+        .attr("width", (d, i)=>textWidth[i])
+        .attr("height", 15)
+        .attr("fill", "#3c3c3c")
+
+      texts.raise();
     },
     drawHouseIcons() {
       const fontHTML = `
@@ -192,14 +224,15 @@ export default {
   .south-korea >>> .map-path {
     fill: #14b191;
     stroke: #ffffff;
-    stroke-width: 1.5px;
+    stroke-width: 1.2px;
   }
   .south-korea >>> text.region {
+    fill: white;
     text-anchor: middle;
     font-size: 0.6rem;
   }
-  .ground-shadow {
-    fill: #2d7f8a96;
+  .south-korea >>> .ground-shadow {
+    fill: #203837;
     stroke: none;
   }
   .building-icon {
@@ -218,4 +251,3 @@ export default {
     transition: all 0.15s ease;
   }
 </style>
-
