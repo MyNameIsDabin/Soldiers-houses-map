@@ -65,7 +65,8 @@ export default {
   },
   computed: {
     ...mapState({
-      'selectedHouse' : state => state.houses.selectedHouse
+      'selectedHouse' : state => state.houses.selectedHouse,
+      'searchedHouses' : state => state.houses.searchedHouses
     }),
     viewBox() {
       return `0 0 ${this.width} ${this.height}`;
@@ -181,7 +182,7 @@ export default {
     },
     drawHouseIcons() {
       let pathCentroid = [0, 0];
-      const iconPaths = d3.select(".buliding-container").selectAll("path.home-icon").data(housesJSON);
+      const iconPaths = d3.select(".buliding-container").selectAll("path.home-icon").data(this.searchedHouses);
       iconPaths.exit().remove();
       iconPaths.enter()
         .append("path")
@@ -204,7 +205,7 @@ export default {
           return `translate(${coord}) scale(${scale})`;
         });
 
-      this.focusSelectedHouse(this.selectedHouse.name);
+      this.focusSelectedHouse(this.selectedHouse);
     },
     focusSelectedHouse(name) {
       d3.select(".buliding-container").selectAll("path.home-icon").attr("fill", "white");
@@ -217,6 +218,9 @@ export default {
     }
   },
   watch: {
+    searchedHouses(houses) {
+      this.drawHouseIcons();
+    },
     selectedHouse(house) {
       this.focusSelectedHouse(house.name);
     }

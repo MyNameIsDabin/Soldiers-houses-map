@@ -33,11 +33,23 @@ export default {
   },
   computed: {
     ...mapState({
-      'isOpenHousesListView' : state => state.common.isOpenHousesListView
+      'isOpenHousesListView' : state => state.common.isOpenHousesListView,
+      'houses' : state => state.houses.houses,
     })
+  },
+  methods: {
+    ...mapMutations(['SET_SEARCH_TEXT', 'SET_SEARCHED_HOUSES', 'SET_SLICED_HOUSES']),
+    loadInit() {
+      const text="";
+      const searchedHouses = this.houses.filter(house=>house.location.includes(""));
+      this.SET_SEARCH_TEXT("");
+      this.SET_SLICED_HOUSES(searchedHouses.slice(0, 5));
+      this.SET_SEARCHED_HOUSES(searchedHouses);
+    }
   },
   async mounted() {
     try {
+      this.loadInit();
       // await gmapsInit();
       // 에라이 ㅅㅂ 공공데이터 수준.. 위경도 따로 받아서 저장했음..
       // const map = new google.maps.Map(this.$el);
