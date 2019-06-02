@@ -15,7 +15,6 @@ const mutations = {
     state.selectedMenu = payload;
   },
   SET_SEARCH_TEXT(state, payload) {
-    console.log(payload);
     state.searchText = payload;
   }
   // SET_BOARD_SIZE (state, payload) {

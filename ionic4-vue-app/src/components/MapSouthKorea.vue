@@ -162,13 +162,6 @@ export default {
       let rects = d3.select(".label-container").selectAll("rect").data(features);
       rects.exit().remove();
       rects.enter().append("rect");
-        //       .attr("y", d=>{
-        //   let moveY = (this.path.centroid(d)[1]-11)*scale;
-        //   if (d.properties.name === '경기도') moveY -= 20;
-        //   else if (d.properties.name === '충청남도') moveY += 10;
-        //   return moveY;
-        // })
-        // .attr("x", (d, i)=>this.path.centroid(d)[0]-textWidth[i]/2*scale)
       rects = d3.select(".label-container")
         .selectAll("rect")
         .attr("rx", 5)
