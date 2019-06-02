@@ -115,6 +115,7 @@ export default {
     },
     drawMap() {
       this.drawGround();
+      this.drawRegionLabel();
       this.drawHouseIcons();
     },
     drawGround() {
@@ -135,6 +136,9 @@ export default {
         .append("path")
         .attr("class", "map-path ground")
         .attr("d", this.path);
+    },
+    drawRegionLabel() {
+      const features = this.provinces.topology.features;
 
       const textWidth = [];
       const texts = d3.select(".label-container")
