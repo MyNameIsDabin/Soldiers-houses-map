@@ -107,6 +107,7 @@ export default {
         if (this.zoomScale !== d3.event.transform.k) {
           this.zoomScale = d3.event.transform.k;
           this.drawHouseIcons();
+          this.drawRegionLabel();
         }
       });
       svg.call(zoom);
@@ -139,49 +140,55 @@ export default {
     },
     drawRegionLabel() {
       const features = this.provinces.topology.features;
+      const scale = 1/this.zoomScale;
 
       const textWidth = [];
-      const texts = d3.select(".label-container")
+      let texts = d3.select(".label-container").selectAll("text").data(features);
+      texts.exit().remove();
+      texts.enter().append("text");
+      texts = d3.select(".label-container")
         .selectAll("text")
-        .data(features)
-        .enter()
-        .append("text")
+        .attr("class", "region")
         .attr("transform",d=>{
           let centroid = this.path.centroid(d);
           if (d.properties.name === '경기도') centroid[1] -= 20; 
           else if (d.properties.name === '충청남도') centroid[1] += 10;
-          return "translate(" + centroid + ")"})
-        .attr("class", "region")
+          return `translate(${centroid}) scale(${scale})`})
         .text(d=>d.properties.name)
         .each(function(d, i){
           textWidth.push(this.getComputedTextLength()+14);
         });
 
-      d3.select(".label-container")
+      let rects = d3.select(".label-container").selectAll("rect").data(features);
+      rects.exit().remove();
+      rects.enter().append("rect");
+        //       .attr("y", d=>{
+        //   let moveY = (this.path.centroid(d)[1]-11)*scale;
+        //   if (d.properties.name === '경기도') moveY -= 20;
+        //   else if (d.properties.name === '충청남도') moveY += 10;
+        //   return moveY;
+        // })
+        // .attr("x", (d, i)=>this.path.centroid(d)[0]-textWidth[i]/2*scale)
+      rects = d3.select(".label-container")
         .selectAll("rect")
-        .data(features)
-        .enter()
-        .append("rect")
-        .attr("x", (d, i)=>this.path.centroid(d)[0]-textWidth[i]/2)
-        .attr("y", d=>{
-          let moveY = this.path.centroid(d)[1]-11;
-          if (d.properties.name === '경기도') moveY -= 20; 
-          else if (d.properties.name === '충청남도') moveY += 10;
-          return moveY;
-        })
         .attr("rx", 5)
         .attr("ry", 5)
         .attr("width", (d, i)=>textWidth[i])
         .attr("height", 15)
+        .attr("transform", (d, i)=>{
+          let centroid = this.path.centroid(d);
+          if (d.properties.name === '경기도') centroid[1] -= 20; 
+          else if (d.properties.name === '충청남도') centroid[1] += 10;
+          centroid[0] -= (textWidth[i]*scale)/2;
+          centroid[1] -= 11*scale;
+          return `translate(${centroid}) scale(${scale})`})
         .attr("fill", "#3c3c3c")
 
       texts.raise();
     },
     drawHouseIcons() {
       let pathCentroid = [0, 0];
-      let iconPaths = d3.select(".buliding-container")
-        .selectAll("path.home-icon")
-        .data(housesJSON);
+      const iconPaths = d3.select(".buliding-container").selectAll("path.home-icon").data(housesJSON);
       iconPaths.exit().remove();
       iconPaths.enter()
         .append("path")
