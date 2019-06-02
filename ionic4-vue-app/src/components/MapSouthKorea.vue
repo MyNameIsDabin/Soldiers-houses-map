@@ -205,7 +205,9 @@ export default {
           return `translate(${coord}) scale(${scale})`;
         });
 
-      this.focusSelectedHouse(this.selectedHouse);
+      if (this.selectedHouse) {
+        this.focusSelectedHouse(this.selectedHouse.name);
+      }
     },
     focusSelectedHouse(name) {
       d3.select(".buliding-container").selectAll("path.home-icon").attr("fill", "white");
