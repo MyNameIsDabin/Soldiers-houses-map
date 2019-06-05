@@ -109,6 +109,10 @@ export default {
           this.zoomScale = d3.event.transform.k;
           this.drawHouseIcons();
           this.drawRegionLabel();
+          this.drawGround();
+          // d3.select(".south-korea")
+          // .selectAll("path.ground")
+          //   .attr("stroke-width", `${1.2*(1/this.zoomScale)}px`)
         }
       });
       svg.call(zoom);
@@ -131,12 +135,13 @@ export default {
         .attr("class", "ground-shadow")
         .attr("d", this.pathShadow);
 
-      d3.select(".south-korea")
+      let paths = d3.select(".south-korea").selectAll("path.ground").data(features);
+      paths.exit().remove();
+      paths.enter().append("path").attr("class", "ground");
+      paths = d3.select(".south-korea")
         .selectAll("path.ground")
-        .data(features)
-        .enter()
-        .append("path")
         .attr("class", "map-path ground")
+        .attr("stroke-width", `${1.2*(1/this.zoomScale)}px`)
         .attr("d", this.path);
     },
     drawRegionLabel() {
@@ -242,7 +247,6 @@ export default {
   .south-korea >>> .map-path {
     fill: #14b191;
     stroke: #ffffff;
-    stroke-width: 1.2px;
   }
   .south-korea >>> .ground-shadow {
     fill: #203837;
