@@ -88,6 +88,6 @@ export default {
     border-bottom: 1px solid #535353;
   }
   .selected {
-    color: #10d8ac;
+    color: #ffe207;
   }
 </style>

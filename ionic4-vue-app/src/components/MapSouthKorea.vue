@@ -66,7 +66,11 @@ export default {
   computed: {
     ...mapState({
       'selectedHouse' : state => state.houses.selectedHouse,
-      'searchedHouses' : state => state.houses.searchedHouses
+      'searchedHouses' : state => state.houses.searchedHouses,
+      'selectedVacationSpot' : state => state.vacation_spot.selectedVacationSpot,
+      'searchedVacationSpots' : state => state.vacation_spot.searchedVacationSpots,
+      'selectedFitnessCenter' : state => state.fitness_center.selectedFitnessCenter,
+      'searchedFitnessCenters' : state => state.fitness_center.searchedFitnessCenters,
     }),
     viewBox() {
       return `0 0 ${this.width} ${this.height}`;
@@ -107,12 +111,7 @@ export default {
         });
         if (this.zoomScale !== d3.event.transform.k) {
           this.zoomScale = d3.event.transform.k;
-          this.drawHouseIcons();
-          this.drawRegionLabel();
-          this.drawGround();
-          // d3.select(".south-korea")
-          // .selectAll("path.ground")
-          //   .attr("stroke-width", `${1.2*(1/this.zoomScale)}px`)
+          this.drawMap();
         }
       });
       svg.call(zoom);
@@ -123,18 +122,11 @@ export default {
       this.drawGround();
       this.drawRegionLabel();
       this.drawHouseIcons();
+      this.drawVacationSpotIcons();
+      this.drawFitnessCenterIcons();
     },
     drawGround() {
       const features = this.provinces.topology.features;
-
-      // 그림자 그리는건데.. 없는게 더 깔끔한 것 같아서 없애야지~
-      // d3.select(".south-korea")
-      //   .selectAll("path.ground-shadow")
-      //   .data(features)
-      //   .enter()
-      //   .append("path")
-      //   .attr("class", "ground-shadow")
-      //   .attr("d", this.pathShadow);
 
       let paths = d3.select(".south-korea").selectAll("path.ground").data(features);
       paths.exit().remove();
@@ -186,16 +178,49 @@ export default {
 
       texts.raise();
     },
+    drawVacationSpotIcons() {
+      this.drawIcons({
+        'className': 'hotel-icon',
+        'data': this.searchedVacationSpots,
+        'path' : 'M560 64c8.84 0 16-7.16 16-16V16c0-8.84-7.16-16-16-16H16C7.16 0 0 7.16 0 16v32c0 8.84 7.16 16 16 16h15.98v384H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h240v-80c0-8.8 7.2-16 16-16h32c8.8 0 16 7.2 16 16v80h240c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16h-16V64h16zm-304 44.8c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4c0 6.4-6.4 12.8-12.8 12.8h-38.4c-6.4 0-12.8-6.4-12.8-12.8v-38.4zm0 96c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4c0 6.4-6.4 12.8-12.8 12.8h-38.4c-6.4 0-12.8-6.4-12.8-12.8v-38.4zm-128-96c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4c0 6.4-6.4 12.8-12.8 12.8h-38.4c-6.4 0-12.8-6.4-12.8-12.8v-38.4zM179.2 256h-38.4c-6.4 0-12.8-6.4-12.8-12.8v-38.4c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4c0 6.4-6.4 12.8-12.8 12.8zM192 384c0-53.02 42.98-96 96-96s96 42.98 96 96H192zm256-140.8c0 6.4-6.4 12.8-12.8 12.8h-38.4c-6.4 0-12.8-6.4-12.8-12.8v-38.4c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4zm0-96c0 6.4-6.4 12.8-12.8 12.8h-38.4c-6.4 0-12.8-6.4-12.8-12.8v-38.4c0-6.4 6.4-12.8 12.8-12.8h38.4c6.4 0 12.8 6.4 12.8 12.8v38.4z'
+      });
+
+      if (this.selectedVacationSpot) {
+        this.focusSelectedIcon(this.selectedVacationSpot.name, "path.hotel-icon", "#f52462", "#f34416");
+      }
+    },
+    drawFitnessCenterIcons() {
+      this.drawIcons({
+        'className': 'dumbbel-icon',
+        'data': this.searchedFitnessCenters,
+        'path' : 'M104 96H56c-13.3 0-24 10.7-24 24v104H8c-4.4 0-8 3.6-8 8v48c0 4.4 3.6 8 8 8h24v104c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V120c0-13.3-10.7-24-24-24zm528 128h-24V120c0-13.3-10.7-24-24-24h-48c-13.3 0-24 10.7-24 24v272c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V288h24c4.4 0 8-3.6 8-8v-48c0-4.4-3.6-8-8-8zM456 32h-48c-13.3 0-24 10.7-24 24v168H256V56c0-13.3-10.7-24-24-24h-48c-13.3 0-24 10.7-24 24v400c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V288h128v168c0 13.3 10.7 24 24 24h48c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24z'
+      });
+
+      if (this.selectedFitnessCenter) {
+        this.focusSelectedIcon(this.selectedFitnessCenter.name, "path.dumbbel-icon", "#f52462", "#f34416");
+      }
+    },
     drawHouseIcons() {
+      this.drawIcons({
+        'className': 'home-icon',
+        'data': this.searchedHouses,
+        'path' : 'M280.4 148.3c1.8-1.5 5.3-2.7 7.6-2.7 2.4 0 5.8 1.2 7.7 2.7l184.3 151.7v164c0 8.8-7.2 16-16 16l-112-0.3h0c-8.8 0-16-7.2-16-16 0 0 0 0 0-0.1v-95.6c0-8.8-7.2-16-16-16h-64c-8.8 0-16 7.2-16 16v95.7 0c0 8.8-7.1 16-15.9 16l-112.1 0.3c-8.8 0-16-7.2-16-16v-163.9zM571.6 251.5c2.4 2 4.4 6.2 4.4 9.3 0 2.4-1.2 5.8-2.7 7.6l-25.5 31c-2 2.4-6.1 4.4-9.2 4.4-2.4 0-5.8-1.2-7.7-2.8l-235.2-193.7c-1.8-1.5-5.3-2.7-7.7-2.7-2.4 0-5.8 1.2-7.6 2.7l-235.2 193.7c-1.8 1.5-5.3 2.7-7.6 2.7-3.1 0-7.3-2-9.3-4.4l-25.5-31c-1.5-1.8-2.8-5.3-2.8-7.7 0-3.1 2-7.3 4.4-9.3l253.1-208.5c7.3-6 21-10.9 30.5-10.9 9.5 0 23.2 4.9 30.5 10.9l89.5 73.7v-72.6c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v138.5z'
+      });
+
+      if (this.selectedHouse) {
+        this.focusSelectedIcon(this.selectedHouse.name, "path.home-icon", "#f52462", "#f34416");
+      }
+    },
+    drawIcons({className, data, path}) {
       let pathCentroid = [0, 0];
-      const shadows = d3.select(".buliding-container").selectAll("ellipse.icon-shadow").data(this.searchedHouses);
-      const iconPaths = d3.select(".buliding-container").selectAll("path.home-icon").data(this.searchedHouses);
+      const shadows = d3.select(".buliding-container").selectAll(`ellipse.icon-shadow.${className}`).data(data);
+      const iconPaths = d3.select(".buliding-container").selectAll(`path.${className}`).data(data);
 
       shadows.exit().remove();
-      shadows.enter().append("ellipse").attr("class", "icon-shadow");
+      shadows.enter().append("ellipse").attr("class", `icon-shadow ${className}`);
 
       iconPaths.exit().remove();
-      iconPaths.enter().append("path").attr("class", "home-icon");
+      iconPaths.enter().append("path").attr("class", className);
 
       d3.select(".buliding-container")
         .selectAll("ellipse.icon-shadow")
@@ -211,10 +236,10 @@ export default {
         })
 
       d3.select(".buliding-container")
-        .selectAll("path.home-icon")
+        .selectAll(`path.${className}`)
         .attr("name", d=>d.name)
-        .attr("fill", "#f52462") /* 집 모양 아이콘 path (by awesome font) */
-        .attr("d", 'M280.4 148.3c1.8-1.5 5.3-2.7 7.6-2.7 2.4 0 5.8 1.2 7.7 2.7l184.3 151.7v164c0 8.8-7.2 16-16 16l-112-0.3h0c-8.8 0-16-7.2-16-16 0 0 0 0 0-0.1v-95.6c0-8.8-7.2-16-16-16h-64c-8.8 0-16 7.2-16 16v95.7 0c0 8.8-7.1 16-15.9 16l-112.1 0.3c-8.8 0-16-7.2-16-16v-163.9zM571.6 251.5c2.4 2 4.4 6.2 4.4 9.3 0 2.4-1.2 5.8-2.7 7.6l-25.5 31c-2 2.4-6.1 4.4-9.2 4.4-2.4 0-5.8-1.2-7.7-2.8l-235.2-193.7c-1.8-1.5-5.3-2.7-7.7-2.7-2.4 0-5.8 1.2-7.6 2.7l-235.2 193.7c-1.8 1.5-5.3 2.7-7.6 2.7-3.1 0-7.3-2-9.3-4.4l-25.5-31c-1.5-1.8-2.8-5.3-2.8-7.7 0-3.1 2-7.3 4.4-9.3l253.1-208.5c7.3-6 21-10.9 30.5-10.9 9.5 0 23.2 4.9 30.5 10.9l89.5 73.7v-72.6c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v138.5z') 
+        .attr("fill", "#f52462") 
+        .attr("d", path) /* 아이콘 path (by awesome font) */
         .each(function(d, i) {
           const bbox = this.getBBox();
           pathCentroid = [bbox.x + bbox.width/2, bbox.y + bbox.height/2];
@@ -226,17 +251,26 @@ export default {
           coord[1] -= pathCentroid[1]*scale;
           return `translate(${coord}) scale(${scale})`;
         });
-
-      if (this.selectedHouse) {
-        this.focusSelectedHouse(this.selectedHouse.name);
-      }
     },
-    focusSelectedHouse(name) {
-      d3.select(".buliding-container").selectAll("path.home-icon").attr("fill", "#f52462");
-      const icon = d3.select(`path.home-icon[name="${name}"]`);
+    focusSelectedIcon(name, selection, unselectColor, selectColor) {
+      let pathCentroid = [0, 0];
+      d3.select(".buliding-container").selectAll(selection)
+        .attr("fill", d=>name === d.name ? selectColor : unselectColor)
+        .each(function(d, i) {
+          const bbox = this.getBBox();
+          pathCentroid = [bbox.x + bbox.width/2, bbox.y + bbox.height/2];
+        })
+        .attr("transform", d=>{
+          const defaultScale = d.name === name ? 0.05 : 0.03;
+          const scale = defaultScale * (1/this.zoomScale);
+          let coord = this.projection([d.lng, d.lat]);
+          coord[0] -= pathCentroid[0]*scale;
+          coord[1] -= pathCentroid[1]*scale;
+          return `translate(${coord}) scale(${scale})`;
+        })
+        .raise();
+      const icon = d3.select(`${selection}[name="${name}"]`);
       if (icon) {
-        icon.transition()
-        icon.attr("fill", "#f34416");
         icon.raise();
       }
     }
@@ -246,7 +280,13 @@ export default {
       this.drawHouseIcons();
     },
     selectedHouse(house) {
-      this.focusSelectedHouse(house.name);
+      this.focusSelectedIcon(house.name, "path.home-icon", "#f52462", "#f34416");
+    },
+    selectedVacationSpot(spot) {
+      this.focusSelectedIcon(spot.name, "path.hotel-icon", "#f52462", "#f34416");
+    },
+    selectedFitnessCenter(center) {
+      this.focusSelectedIcon(center.name, "path.dumbbel-icon", "#f52462", "#f34416");
     }
   }
 }
