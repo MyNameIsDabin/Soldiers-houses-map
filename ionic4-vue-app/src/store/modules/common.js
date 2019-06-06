@@ -1,9 +1,8 @@
-import Vue from 'vue';
 import * as config from '@/config';
 
 const state = {
   isOpenHousesListView: false,
-  selectedMenu: config.MENU_MAP,
+  selectedMenu: config.MENU_HOUSE,
   searchText: ""
 }
 
@@ -17,10 +16,6 @@ const mutations = {
   SET_SEARCH_TEXT(state, payload) {
     state.searchText = payload;
   }
-  // SET_BOARD_SIZE (state, payload) {
-  //   Vue.set(state.boardSize, 'width', payload[0]);
-  //   Vue.set(state.boardSize, 'height', payload[1]);
-  // },  
 }
 
 const actions = {

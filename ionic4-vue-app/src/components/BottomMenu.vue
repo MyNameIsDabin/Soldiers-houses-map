@@ -18,15 +18,7 @@ export default {
   name: 'BottomMenu',
   data() {
     return {
-      buttonList: [{
-        icon: 'home',
-        text: '홈',
-        idx: config.MENU_HOME
-      },{
-        icon: 'map-marked-alt',
-        text: '지도',
-        idx: config.MENU_MAP
-      }]
+      buttonList: config.MENU_LIST
     };
   },
   computed: {
