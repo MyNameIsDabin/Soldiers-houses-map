@@ -6,8 +6,6 @@
       <toolbar></toolbar>
       <list-view-houses class="list-view-wrapper"></list-view-houses>
     </div>
-    <bottom-menu>
-    </bottom-menu>
   </div>
 </template>
 <script>
@@ -19,14 +17,13 @@ import MapSouthKorea from './components/MapSouthKorea'
 import SearchBar from './components/SearchBar'
 import Toolbar from './components/Toolbar'
 import ListViewHouses from './components/ListViewHouses.vue'
-import BottomMenu from './components/BottomMenu.vue'
 import InfoViewHouse from './components/InfoViewHouse.vue'
 
 // import datas from '@/assets/data/vacation_spot.json';
 export default {
   name: 'App',
   components : {
-    MapSouthKorea, SearchBar, Toolbar, ListViewHouses, BottomMenu, InfoViewHouse
+    MapSouthKorea, SearchBar, Toolbar, ListViewHouses, InfoViewHouse
   },
   data () {
     return {
@@ -134,11 +131,11 @@ export default {
     position: fixed;
     width: 100%;
     height: 100%;
-    top: calc(100% - 89px);
+    top: calc(100% - 40px);
     transition: all 0.5s cubic-bezier(0.42, 0.04, 0.16, 1);
   }
   .list-view-bar.opened {
     top: calc(40%);
-    height: calc(60% - 89px);
+    height: calc(60% - 40px);
   }
 </style>
