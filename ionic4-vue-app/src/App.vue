@@ -122,7 +122,7 @@ export default {
     width: 100%;
   }
   body {
-    background-color: #414a49;
+    background-color: #4c4c4c;
   }
   #main {
     display: flex;

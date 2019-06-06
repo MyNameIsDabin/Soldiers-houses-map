@@ -127,13 +127,14 @@ export default {
     drawGround() {
       const features = this.provinces.topology.features;
 
-      d3.select(".south-korea")
-        .selectAll("path.ground-shadow")
-        .data(features)
-        .enter()
-        .append("path")
-        .attr("class", "ground-shadow")
-        .attr("d", this.pathShadow);
+      // 그림자 그리는건데.. 없는게 더 깔끔한 것 같아서 없애야지~
+      // d3.select(".south-korea")
+      //   .selectAll("path.ground-shadow")
+      //   .data(features)
+      //   .enter()
+      //   .append("path")
+      //   .attr("class", "ground-shadow")
+      //   .attr("d", this.pathShadow);
 
       let paths = d3.select(".south-korea").selectAll("path.ground").data(features);
       paths.exit().remove();
@@ -141,7 +142,7 @@ export default {
       paths = d3.select(".south-korea")
         .selectAll("path.ground")
         .attr("class", "map-path ground")
-        .attr("stroke-width", `${1.2*(1/this.zoomScale)}px`)
+        .attr("stroke-width", `${1.0*(1/this.zoomScale)}px`)
         .attr("d", this.path);
     },
     drawRegionLabel() {
@@ -187,17 +188,33 @@ export default {
     },
     drawHouseIcons() {
       let pathCentroid = [0, 0];
+      const shadows = d3.select(".buliding-container").selectAll("ellipse.icon-shadow").data(this.searchedHouses);
       const iconPaths = d3.select(".buliding-container").selectAll("path.home-icon").data(this.searchedHouses);
+
+      shadows.exit().remove();
+      shadows.enter().append("ellipse").attr("class", "icon-shadow");
+
       iconPaths.exit().remove();
-      iconPaths.enter()
-        .append("path")
-        .attr("class", "home-icon"); /* 집 모양 아이콘 path (by awesome font) */
+      iconPaths.enter().append("path").attr("class", "home-icon");
+
+      d3.select(".buliding-container")
+        .selectAll("ellipse.icon-shadow")
+        .attr("rx", 20)
+        .attr("ry", 10)
+        .attr("opacity", 0.4)
+        .attr("transform", d=>{
+          const scale = 0.5 * (1/this.zoomScale);
+          let coord = this.projection([d.lng, d.lat]);
+          coord[0] -= pathCentroid[0]*scale;
+          coord[1] -= (pathCentroid[1]-14)*scale;
+          return `translate(${coord}) scale(${scale})`;
+        })
 
       d3.select(".buliding-container")
         .selectAll("path.home-icon")
         .attr("name", d=>d.name)
-        .attr("fill", "white")
-        .attr("d", 'M280.4 148.3c1.8-1.5 5.3-2.7 7.6-2.7 2.4 0 5.8 1.2 7.7 2.7l184.3 151.7v164c0 8.8-7.2 16-16 16l-112-0.3h0c-8.8 0-16-7.2-16-16 0 0 0 0 0-0.1v-95.6c0-8.8-7.2-16-16-16h-64c-8.8 0-16 7.2-16 16v95.7 0c0 8.8-7.1 16-15.9 16l-112.1 0.3c-8.8 0-16-7.2-16-16v-163.9zM571.6 251.5c2.4 2 4.4 6.2 4.4 9.3 0 2.4-1.2 5.8-2.7 7.6l-25.5 31c-2 2.4-6.1 4.4-9.2 4.4-2.4 0-5.8-1.2-7.7-2.8l-235.2-193.7c-1.8-1.5-5.3-2.7-7.7-2.7-2.4 0-5.8 1.2-7.6 2.7l-235.2 193.7c-1.8 1.5-5.3 2.7-7.6 2.7-3.1 0-7.3-2-9.3-4.4l-25.5-31c-1.5-1.8-2.8-5.3-2.8-7.7 0-3.1 2-7.3 4.4-9.3l253.1-208.5c7.3-6 21-10.9 30.5-10.9 9.5 0 23.2 4.9 30.5 10.9l89.5 73.7v-72.6c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v138.5z')
+        .attr("fill", "#f52462") /* 집 모양 아이콘 path (by awesome font) */
+        .attr("d", 'M280.4 148.3c1.8-1.5 5.3-2.7 7.6-2.7 2.4 0 5.8 1.2 7.7 2.7l184.3 151.7v164c0 8.8-7.2 16-16 16l-112-0.3h0c-8.8 0-16-7.2-16-16 0 0 0 0 0-0.1v-95.6c0-8.8-7.2-16-16-16h-64c-8.8 0-16 7.2-16 16v95.7 0c0 8.8-7.1 16-15.9 16l-112.1 0.3c-8.8 0-16-7.2-16-16v-163.9zM571.6 251.5c2.4 2 4.4 6.2 4.4 9.3 0 2.4-1.2 5.8-2.7 7.6l-25.5 31c-2 2.4-6.1 4.4-9.2 4.4-2.4 0-5.8-1.2-7.7-2.8l-235.2-193.7c-1.8-1.5-5.3-2.7-7.7-2.7-2.4 0-5.8 1.2-7.6 2.7l-235.2 193.7c-1.8 1.5-5.3 2.7-7.6 2.7-3.1 0-7.3-2-9.3-4.4l-25.5-31c-1.5-1.8-2.8-5.3-2.8-7.7 0-3.1 2-7.3 4.4-9.3l253.1-208.5c7.3-6 21-10.9 30.5-10.9 9.5 0 23.2 4.9 30.5 10.9l89.5 73.7v-72.6c0-6.6 5.4-12 12-12h56c6.6 0 12 5.4 12 12v138.5z') 
         .each(function(d, i) {
           const bbox = this.getBBox();
           pathCentroid = [bbox.x + bbox.width/2, bbox.y + bbox.height/2];
@@ -215,7 +232,7 @@ export default {
       }
     },
     focusSelectedHouse(name) {
-      d3.select(".buliding-container").selectAll("path.home-icon").attr("fill", "white");
+      d3.select(".buliding-container").selectAll("path.home-icon").attr("fill", "#f52462");
       const icon = d3.select(`path.home-icon[name="${name}"]`);
       if (icon) {
         icon.transition()
@@ -245,8 +262,8 @@ export default {
     justify-content: center;
   }
   .south-korea >>> .map-path {
-    fill: #14b191;
-    stroke: #ffffff;
+    fill: #ffffff;
+    stroke: #4c4c4c;
   }
   .south-korea >>> .ground-shadow {
     fill: #203837;

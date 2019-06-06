@@ -50,7 +50,7 @@ export default {
   .list-contents {
     display: flex;
     height: 40px;
-    padding: 5px 20px;
+    padding: 5px 15px;
     align-items: center;
     justify-content: space-between;
     background-color: #3c3c3c;

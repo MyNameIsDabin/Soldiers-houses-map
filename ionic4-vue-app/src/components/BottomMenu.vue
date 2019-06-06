@@ -57,7 +57,7 @@ export default {
     font-size: 0.7rem;
   }
   .selected {
-    color: #ffce31;
+    color: #ffe207;
     transition: all 0.4s cubic-bezier(0.07, 0.38, 0.04, 1.28);
   }
 </style>
