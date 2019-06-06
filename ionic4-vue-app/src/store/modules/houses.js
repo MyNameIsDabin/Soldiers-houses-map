@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import houseJSON from '@/assets/data/house_sample.json';
-import gmapsInit from '@/utils/gmaps';
 
 const state = {
   houses: houseJSON.reverse(),
