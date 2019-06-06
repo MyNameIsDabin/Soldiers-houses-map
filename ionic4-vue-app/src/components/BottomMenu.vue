@@ -52,7 +52,6 @@ export default {
     align-items: center;
     font-size: 1.3rem;
     flex-grow: 1;
-    height: 100%;
   }
   .button span {
     font-size: 0.7rem;

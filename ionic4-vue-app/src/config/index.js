@@ -3,7 +3,7 @@ export const MENU_HOTEL = 1;
 export const MENU_FITNESS_CENTER = 2;
 export const MENU_LIST = [{
     icon: 'home',
-    text: '군 주택 특별공급',
+    text: '군 주택',
     idx: MENU_HOUSE
   },{
     icon: 'hotel',
