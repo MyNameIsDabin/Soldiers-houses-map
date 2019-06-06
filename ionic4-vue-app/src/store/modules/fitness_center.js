@@ -29,6 +29,11 @@ const actions = {
     commit('SET_SLICED_FITNESS_CENTERS', searchedFitnessCenters.slice(0, 5));
     commit('SET_SEARCHED_FITNESS_CENTERS', searchedFitnessCenters);
   },
+  searchFitnessCenters({ state, commit }, payload) {
+    const searchedFitnessCenters = state.fitnessCenter.filter(center=>center.location.includes(payload));
+    commit('SET_SLICED_FITNESS_CENTERS', searchedFitnessCenters.slice(0, 5));
+    commit('SET_SEARCHED_FITNESS_CENTERS', searchedFitnessCenters);
+  },
   requestMoreFitnessCenters({ state, commit }, payload) {
     setTimeout(() => {
       const temp = [];

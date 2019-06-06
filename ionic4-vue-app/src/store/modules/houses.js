@@ -29,6 +29,11 @@ const actions = {
     commit('SET_SLICED_HOUSES', searchedHouses.slice(0, 5));
     commit('SET_SEARCHED_HOUSES', searchedHouses);
   },
+  searchHouses({ state, commit }, payload) {
+    const searchedHouses = state.houses.filter(house=>house.location.includes(payload));
+    commit('SET_SLICED_HOUSES', searchedHouses.slice(0, 5));
+    commit('SET_SEARCHED_HOUSES', searchedHouses);
+  },
   requestMoreHouses({ state, commit }, payload) {
     setTimeout(() => {
       const temp = [];

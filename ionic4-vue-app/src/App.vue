@@ -43,12 +43,12 @@ export default {
   },
   methods: {
     ...mapMutations(['SET_SEARCH_TEXT', 'SET_SEARCHED_HOUSES', 'SET_SLICED_HOUSES']),
-    ...mapActions(['initHouses', 'initFitnessCenters', 'initVacationSpots']),
+    ...mapActions(['searchVacationSpots', 'searchFitnessCenters', 'searchHouses']),
     loadInit() {
       this.SET_SEARCH_TEXT("");
-      this.initHouses();
-      this.initFitnessCenters();
-      this.initVacationSpots();
+      this.searchVacationSpots("");
+      this.searchFitnessCenters("");
+      this.searchHouses("");
     }
   },
   async mounted() {

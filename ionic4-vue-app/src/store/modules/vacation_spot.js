@@ -29,6 +29,11 @@ const actions = {
     commit('SET_SLICED_VACATION_SPOTS', searchedVacationSpots.slice(0, 5));
     commit('SET_SEARCHED_VACATION_SPOTS', searchedVacationSpots);
   },
+  searchVacationSpots({ state, commit }, payload) {
+    const searchedVacationSpots = state.vacationSpot.filter(spot=>spot.location.includes(payload));
+    commit('SET_SLICED_VACATION_SPOTS', searchedVacationSpots.slice(0, 5));
+    commit('SET_SEARCHED_VACATION_SPOTS', searchedVacationSpots);
+  },
   requestMoreVacationSpots({ state, commit }, payload) {
     setTimeout(() => {
       const temp = [];
