@@ -19,7 +19,7 @@ import Toolbar from './components/Toolbar'
 import ListViewHouses from './components/ListViewHouses.vue'
 import InfoViewHouse from './components/InfoViewHouse.vue'
 
-// import datas from '@/assets/data/vacation_spot.json';
+import datas from '@/assets/data/datas.json';
 export default {
   name: 'App',
   components : {
@@ -48,53 +48,53 @@ export default {
   async mounted() {
     try {
       this.loadInit();
-    //   await gmapsInit();
-    //   // 에라이 ㅅㅂ 공공데이터 수준.. 위경도 따로 받아서 저장했음..
-    //   const map = new google.maps.Map(this.$el);
-    //     console.log(datas)
-    //   const geocoder = new google.maps.Geocoder();
-    //   const jsonArr = [];
-    //   const test = async ()=> {
-    //     for(let house of datas) {
-    //       console.log(house.name);
-    //       const geocoder = new google.maps.Geocoder();
-    //       const arrPush = () => {
-    //         return new Promise((resolve, reject)=>{
-    //           geocoder.geocode({ address: `${house.location}` }, (results, status) => {
-    //             if (status !== 'OK' || !results[0]) {
-    //               // throw new Error(status)
-    //               console.log(status)
-    //               resolve();
-    //             } else {
-    //               const lat = results[0].geometry.location.lat();
-    //               const lng = results[0].geometry.location.lng();
-    //               const obj = Object.assign(house, {
-    //                 'lat' : lat,
-    //                 'lng' : lng
-    //               });
-    //               delete obj.row;
-    //               jsonArr.push(obj);
-    //             }
-    //             setTimeout(() => {
-    //               resolve();
-    //             }, 1000);
-    //           });
-    //         });
-    //       }
-    //       await arrPush();
-    //     }
-    //   };
-    //   await test();
+      await gmapsInit();
+      // 에라이 ㅅㅂ 공공데이터 수준.. 위경도 따로 받아서 저장했음..
+      const map = new google.maps.Map(this.$el);
+        console.log(datas)
+      const geocoder = new google.maps.Geocoder();
+      const jsonArr = [];
+      const test = async ()=> {
+        for(let house of datas) {
+          console.log(house.name);
+          const geocoder = new google.maps.Geocoder();
+          const arrPush = () => {
+            return new Promise((resolve, reject)=>{
+              geocoder.geocode({ address: `${house.location}` }, (results, status) => {
+                if (status !== 'OK' || !results[0]) {
+                  // throw new Error(status)
+                  console.log(status)
+                  resolve();
+                } else {
+                  const lat = results[0].geometry.location.lat();
+                  const lng = results[0].geometry.location.lng();
+                  const obj = Object.assign(house, {
+                    'lat' : lat,
+                    'lng' : lng
+                  });
+                  delete obj.row;
+                  jsonArr.push(obj);
+                }
+                setTimeout(() => {
+                  resolve();
+                }, 1000);
+              });
+            });
+          }
+          await arrPush();
+        }
+      };
+      await test();
 
-    //   const data = JSON.stringify(jsonArr)
-    //   const blob = new Blob([data], {type: 'text/plain'})
-    //   const e = document.createEvent('MouseEvents'),
-    //   a = document.createElement('a');
-    //   a.download = "test.json";
-    //   a.href = window.URL.createObjectURL(blob);
-    //   a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
-    //   e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    //   a.dispatchEvent(e);
+      const data = JSON.stringify(jsonArr)
+      const blob = new Blob([data], {type: 'text/plain'})
+      const e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+      a.download = "fitness_center.json";
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      a.dispatchEvent(e);
     } catch (error) {
       console.error(error);
     }
