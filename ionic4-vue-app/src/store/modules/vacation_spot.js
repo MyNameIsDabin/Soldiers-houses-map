@@ -24,6 +24,11 @@ const mutations = {
 }
 
 const actions = {
+  initVacationSpots({ state, commit }) {
+    const searchedVacationSpots = state.vacationSpot.filter(spot=>spot.location.includes(""));
+    commit('SET_SLICED_VACATION_SPOTS', searchedVacationSpots.slice(0, 5));
+    commit('SET_SEARCHED_VACATION_SPOTS', searchedVacationSpots);
+  },
   requestMoreVacationSpots({ state, commit }, payload) {
     setTimeout(() => {
       const temp = [];

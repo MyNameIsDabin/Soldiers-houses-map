@@ -2,33 +2,30 @@
   <div class="list-view-houses">
     <div
       class="item"
-      v-for="house in slicedHouses"
-      @click="SET_SELECTED_HOUSE(house)"
-      :class="{'selected':house===selectedHouse}"
-      :key="house.idx">
+      v-for="center in slicedFitnessCenters"
+      @click="SET_SELECTED_FITNESS_CENTER(center)"
+      :class="{'selected':center===selectedFitnessCenter}"
+      :key="center.idx">
       <div>
         <div class="location">
-          {{house.location}}
+          {{center.location}}
         </div>
         <div class="name">
-          {{house.name}}
-        </div>
-        <div class="date">
-          {{house.date}}~
+          {{center.name}}
         </div>
         <div class="tel">
           <span>
             <v-icon name="phone"/>
-            {{house.tel}}
+            {{center.tel}}
           </span>
           <span>
-            (배정세대수 {{house.count}})
+            <!-- (배정세대수 {{house.count}}) -->
           </span>
         </div>
       </div>
     </div>
     <infinite-loading 
-      v-show="slicedHouses.length < searchedHouses.length"
+      v-show="slicedFitnessCenters.length < searchedFitnessCenters.length"
       @infinite="loadMore"
       spinner="spiral">
     </infinite-loading>
@@ -38,7 +35,7 @@
 import InfiniteLoading from 'vue-infinite-loading';
 import { mapState, mapMutations, mapActions } from 'vuex';
 export default {
-  name: 'ListViewHouses',
+  name: 'ListViewFitnessCenters',
   components: {
     InfiniteLoading
   },
@@ -51,23 +48,23 @@ export default {
   },
   computed: {
     ...mapState({
-      'selectedHouse' : state => state.houses.selectedHouse,
-      'searchedHouses' : state => state.houses.searchedHouses,
-      'slicedHouses' : state => state.houses.slicedHouses
+      'selectedFitnessCenter' : state => state.fitness_center.selectedFitnessCenter,
+      'searchedFitnessCenters' : state => state.fitness_center.searchedFitnessCenters,
+      'slicedFitnessCenters' : state => state.fitness_center.slicedFitnessCenters
     })
   },
   methods: {
-    ...mapMutations(['SET_SELECTED_HOUSE', 'SET_SLICED_HOUSES']),
-    ...mapActions(['requestMoreHouses']),
+    ...mapMutations(['SET_SELECTED_FITNESS_CENTER', 'SET_SLICED_FITNESS_CENTERS']),
+    ...mapActions(['requestMoreFitnessCenters']),
     loadMore($state) {
-      this.requestMoreHouses(()=>{
+      this.requestMoreFitnessCenters(()=>{
         if ($state) {
           $state.loaded();
         }
       });
     },
-    selectHouse(house) {
-      this.SET_SELECTED_HOUSE(house);
+    selectFitnessCenter(fitnessCenter) {
+      this.SET_SELECTED_FITNESS_CENTER(fitnessCenter);
     }
   }
 }

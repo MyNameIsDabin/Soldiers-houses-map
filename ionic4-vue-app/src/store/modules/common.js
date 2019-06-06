@@ -25,8 +25,19 @@ const actions = {
   // }
 }
 
+const getters = {
+  menuListViewHeaderText(state) {
+    switch(state.selectedMenu) {
+      case config.MENU_HOUSE: return "군 주택 특별공급";
+      case config.MENU_HOTEL: return "편의시설 (호텔·콘도)";
+      case config.MENU_FITNESS_CENTER: return "체력 단력장";
+    }
+  }
+}
+
 export default {
   state,
   mutations,
-  actions
+  actions,
+  getters
 }

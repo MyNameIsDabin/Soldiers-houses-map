@@ -2,33 +2,30 @@
   <div class="list-view-houses">
     <div
       class="item"
-      v-for="house in slicedHouses"
-      @click="SET_SELECTED_HOUSE(house)"
-      :class="{'selected':house===selectedHouse}"
-      :key="house.idx">
+      v-for="spot in slicedVacationSpots"
+      @click="SET_SELECTED_VACATION_SPOT(spot)"
+      :class="{'selected':spot===selectedVacationSpot}"
+      :key="spot.idx">
       <div>
         <div class="location">
-          {{house.location}}
+          {{spot.location}}
         </div>
         <div class="name">
-          {{house.name}}
-        </div>
-        <div class="date">
-          {{house.date}}~
+          {{spot.name}}
         </div>
         <div class="tel">
           <span>
             <v-icon name="phone"/>
-            {{house.tel}}
+            {{spot.tel}}
           </span>
           <span>
-            (배정세대수 {{house.count}})
+            <!-- (배정세대수 {{spot.count}}) -->
           </span>
         </div>
       </div>
     </div>
     <infinite-loading 
-      v-show="slicedHouses.length < searchedHouses.length"
+      v-show="slicedVacationSpots.length < searchedVacationSpots.length"
       @infinite="loadMore"
       spinner="spiral">
     </infinite-loading>
@@ -38,7 +35,7 @@
 import InfiniteLoading from 'vue-infinite-loading';
 import { mapState, mapMutations, mapActions } from 'vuex';
 export default {
-  name: 'ListViewHouses',
+  name: 'ListViewVacationSpots',
   components: {
     InfiniteLoading
   },
@@ -51,23 +48,23 @@ export default {
   },
   computed: {
     ...mapState({
-      'selectedHouse' : state => state.houses.selectedHouse,
-      'searchedHouses' : state => state.houses.searchedHouses,
-      'slicedHouses' : state => state.houses.slicedHouses
+      'selectedVacationSpot' : state => state.vacation_spot.selectedVacationSpot,
+      'searchedVacationSpots' : state => state.vacation_spot.searchedVacationSpots,
+      'slicedVacationSpots' : state => state.vacation_spot.slicedVacationSpots
     })
   },
   methods: {
-    ...mapMutations(['SET_SELECTED_HOUSE', 'SET_SLICED_HOUSES']),
-    ...mapActions(['requestMoreHouses']),
+    ...mapMutations(['SET_SELECTED_VACATION_SPOT', 'SET_SLICED_VACATION_SPOTS']),
+    ...mapActions(['requestMoreVacationSpots']),
     loadMore($state) {
-      this.requestMoreHouses(()=>{
+      this.requestMoreVacationSpots(()=>{
         if ($state) {
           $state.loaded();
         }
       });
     },
-    selectHouse(house) {
-      this.SET_SELECTED_HOUSE(house);
+    selectSpot(spot) {
+      this.SET_SELECTED_VACATION_SPOT(spot);
     }
   }
 }

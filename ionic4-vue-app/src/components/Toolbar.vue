@@ -2,7 +2,7 @@
   <div class="toolbar" @click="TOGGLE_HOUSES_LIST_VIEW">
     <div class="list-contents">
       <span class="title">
-        군 주택 특별공급 | {{this.searchedHouses.length}}개
+        {{menuListViewHeaderText}} | {{searchedListCount}}개
       </span>
       <span class="toggle-list-view">
         <v-icon v-if="!isOpenHousesListView" name="caret-up"/>
@@ -13,7 +13,7 @@
 </template>
 <script>
 import * as config from '@/config'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
 export default {
   name: 'Toolbar',
   data() {
@@ -22,10 +22,20 @@ export default {
   },
   computed: {
     ...mapState({
+      'selectedMenu' : state => state.common.selectedMenu,
       'isOpenHousesListView' : state => state.common.isOpenHousesListView,
       'searchedHouses' : state => state.houses.searchedHouses,
-      'houseJSON' : state => state.houses.houseJSON
-    })
+      'searchedVacationSpots' : state => state.vacation_spot.searchedVacationSpots,
+      'searchedFitnessCenters' : state => state.fitness_center.searchedFitnessCenters
+    }),
+    ...mapGetters(['menuListViewHeaderText']),
+    searchedListCount() {
+      switch(this.selectedMenu) {
+        case config.MENU_HOUSE: return this.searchedHouses.length;
+        case config.MENU_HOTEL: return this.searchedVacationSpots.length;
+        case config.MENU_FITNESS_CENTER: return this.searchedFitnessCenters.length;
+      }
+    }
   },
   methods: {
     ...mapMutations(['TOGGLE_HOUSES_LIST_VIEW'])

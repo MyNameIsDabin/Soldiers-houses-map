@@ -24,6 +24,11 @@ const mutations = {
 }
 
 const actions = {
+  initFitnessCenters({ state, commit }) {
+    const searchedFitnessCenters = state.fitnessCenter.filter(center=>center.location.includes(""));
+    commit('SET_SLICED_FITNESS_CENTERS', searchedFitnessCenters.slice(0, 5));
+    commit('SET_SEARCHED_FITNESS_CENTERS', searchedFitnessCenters);
+  },
   requestMoreFitnessCenters({ state, commit }, payload) {
     setTimeout(() => {
       const temp = [];

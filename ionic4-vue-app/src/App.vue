@@ -4,7 +4,9 @@
     <map-south-korea :width="320" :height="568"></map-south-korea>
     <div class="list-view-bar" :class="{'opened':isOpenHousesListView}">
       <toolbar></toolbar>
-      <list-view-houses class="list-view-wrapper"></list-view-houses>
+      <list-view-houses v-show="selectedMenu===0" class="list-view-wrapper"></list-view-houses>
+      <list-view-fitness-centers v-show="selectedMenu===1" class="list-view-wrapper"></list-view-fitness-centers>
+      <list-view-vacation-spots v-show="selectedMenu===2" class="list-view-wrapper"></list-view-vacation-spots>
     </div>
     <bottom-menu></bottom-menu>
   </div>
@@ -18,14 +20,15 @@ import MapSouthKorea from '@/components/MapSouthKorea'
 import SearchBar from '@/components/SearchBar'
 import Toolbar from '@/components/Toolbar'
 import ListViewHouses from '@/components/ListViewHouses.vue'
-import InfoViewHouse from '@/components/InfoViewHouse.vue'
+import ListViewFitnessCenters from '@/components/ListViewFitnessCenters.vue'
+import ListViewVacationSpots from '@/components/ListViewVacationSpots.vue'
 import BottomMenu from '@/components/BottomMenu'
 
 // import datas from '@/assets/data/datas.json';
 export default {
   name: 'App',
   components : {
-    MapSouthKorea, SearchBar, Toolbar, ListViewHouses, InfoViewHouse, BottomMenu
+    MapSouthKorea, SearchBar, Toolbar, ListViewHouses, ListViewFitnessCenters, ListViewVacationSpots, BottomMenu
   },
   data () {
     return {
@@ -34,17 +37,18 @@ export default {
   computed: {
     ...mapState({
       'isOpenHousesListView' : state => state.common.isOpenHousesListView,
+      'selectedMenu' : state => state.common.selectedMenu,
       'houses' : state => state.houses.houses,
     })
   },
   methods: {
     ...mapMutations(['SET_SEARCH_TEXT', 'SET_SEARCHED_HOUSES', 'SET_SLICED_HOUSES']),
+    ...mapActions(['initHouses', 'initFitnessCenters', 'initVacationSpots']),
     loadInit() {
-      const text="";
-      const searchedHouses = this.houses.filter(house=>house.location.includes(""));
       this.SET_SEARCH_TEXT("");
-      this.SET_SLICED_HOUSES(searchedHouses.slice(0, 5));
-      this.SET_SEARCHED_HOUSES(searchedHouses);
+      this.initHouses();
+      this.initFitnessCenters();
+      this.initVacationSpots();
     }
   },
   async mounted() {
