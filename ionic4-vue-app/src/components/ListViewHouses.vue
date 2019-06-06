@@ -4,7 +4,8 @@
       class="item"
       v-for="house in slicedHouses"
       @click="SET_SELECTED_HOUSE(house)"
-      :class="{'selected':house===selectedHouse}">
+      :class="{'selected':house===selectedHouse}"
+      :key="house.idx">
       <div>
         <div class="location">
           {{house.location}}
