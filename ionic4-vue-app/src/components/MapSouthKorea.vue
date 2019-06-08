@@ -357,7 +357,7 @@ export default {
   }
   .zoom-buttons {
     position: fixed;
-    top: 54px;
+    top: 49px;
     display: flex;
     left: 8px;
     flex-direction: column;

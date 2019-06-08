@@ -1,12 +1,12 @@
 <template>
-  <div class="info-view-house">
+  <div class="info-view">
   </div>
 </template>
 <script>
 import { mapState, mapMutations } from 'vuex'
 import * as config from '@/config'
 export default {
-  name: 'InfoViewHouse',
+  name: 'InfoView',
   data() {
     return {
     }
