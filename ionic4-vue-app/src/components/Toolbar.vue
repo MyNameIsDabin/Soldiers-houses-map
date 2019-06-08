@@ -5,8 +5,7 @@
         {{menuListViewHeaderText}} | {{searchedListCount}}개
       </span>
       <span class="toggle-list-view">
-        <v-icon v-if="!isOpenHousesListView" name="caret-up"/>
-        <v-icon v-else name="caret-down"/>
+        <v-icon name="caret-up"/>
       </span>
     </div>
   </div>
@@ -53,10 +52,10 @@ export default {
     padding: 5px 15px;
     align-items: center;
     justify-content: space-between;
-    background-color: #0d1119;
+    background-color: #2f3640;
     color: white;
-    /* border-bottom: 1px solid #535353; */
-    box-shadow: 0px -1px 5px #4a4a4a;
+    border-bottom: 1px solid #353b48;
+    box-shadow: 0px -1px 4px #2f3640;
   }
   .list-contents .title {
     padding: 8px 0;

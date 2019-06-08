@@ -52,14 +52,11 @@ export default {
     display: flex;
     justify-content: center;
     flex-direction: row;
-    margin: 8px;
     flex-grow: 1;
-    border-radius: 4px;
-    background: #ffffffd4;
+    background: #2f3640e0;
     padding: 7px;
-    color: #0d1119;
-    -webkit-box-shadow: 0px 1px 3px #969696;
-    box-shadow: 0px 1px 3px #969696;
+    color: white;
+    box-shadow: 0px 1px 3px #35444e70;
   }
   span {
     text-align: center;
@@ -71,11 +68,14 @@ export default {
     font-weight: bold;
     background: none;
     border: 0;
-    color: #0d1119;
+    color: white;
     padding: 0;
   }
   input:focus {
     outline: none;
+  }
+  input::placeholder {
+    color: #ffffffa1;
   }
   svg {
     vertical-align: middle;

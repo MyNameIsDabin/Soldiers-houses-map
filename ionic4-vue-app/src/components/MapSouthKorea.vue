@@ -136,7 +136,7 @@ export default {
       paths = d3.select(".south-korea")
         .selectAll("path.ground")
         .attr("class", "map-path ground")
-        .attr("stroke-width", `${0.5*(1/this.zoomScale)}px`)
+        .attr("stroke-width", `${1.1*(1/this.zoomScale)}px`)
         .attr("d", this.path);
     },
     drawRegionLabel() {
@@ -331,11 +331,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #9fc7d8;
+    background-color: #5aa8b1;
   }
   .south-korea >>> .map-path {
-    fill: #ffffff;
-    stroke: #4c4c4c;
+    fill: #42b983;
+    stroke: #ffffff;
   }
   .south-korea >>> .ground-shadow {
     fill: #203837;

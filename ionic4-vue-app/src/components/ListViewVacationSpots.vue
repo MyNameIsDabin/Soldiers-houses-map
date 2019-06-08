@@ -71,7 +71,7 @@ export default {
 </script>
 <style scoped>
   .list-view-houses {
-    background-color: #0d1119;
+    background-color: #353b48;
     color: white;
     font-size: 0.8rem;
   }
@@ -82,10 +82,8 @@ export default {
     padding: 3px 10px;
   }
   .item > div {
-    background-color: #1b202b;
+    background-color: #353b48;
     padding: 4px 10px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px #000000d9;
   }
   .selected {
     color: #5bd2c8;

@@ -38,12 +38,12 @@ export default {
     width: 100%;
     align-items: center;
     justify-content: space-evenly;
-    background-color: #0d1119;
+    background-color: #2f3640;
     bottom: 0;
     height: 50px;
     color: white;
     z-index: 1;
-    /* border-top: 1px solid #535353; */
+    border-top: 1px solid #353b48;
   }
   .button {
     display: flex;
@@ -57,7 +57,7 @@ export default {
     font-size: 0.7rem;
   }
   .selected {
-    color: #5bd2c8;
+    color: #25e890;
     transition: all 0.4s cubic-bezier(0.07, 0.38, 0.04, 1.28);
   }
 </style>

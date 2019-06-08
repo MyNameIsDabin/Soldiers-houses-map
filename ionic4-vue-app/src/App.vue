@@ -141,4 +141,10 @@ export default {
     top: calc(40%);
     height: calc(60% - 89px);
   }
+  .list-view-bar svg.fa-icon {
+    transition-duration: 0.5s;
+  }
+  .list-view-bar.opened svg.fa-icon {
+    transform: rotate(180deg);
+  }
 </style>
