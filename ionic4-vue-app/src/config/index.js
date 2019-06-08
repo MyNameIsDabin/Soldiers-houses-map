@@ -15,5 +15,5 @@ export const MENU_LIST = [{
     idx: MENU_FITNESS_CENTER
   }
 ];
-export const SELECTED_COLOR = '#f52462';
-export const UNSELECTED_COLOR = 'black';
+export const SELECTED_COLOR = 'red';
+export const UNSELECTED_COLOR = '#0d1119';

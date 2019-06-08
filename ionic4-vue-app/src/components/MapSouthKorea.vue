@@ -111,7 +111,7 @@ export default {
     },
     initZoomEvent(queries) {
       const svg = d3.select(this.$el.querySelector("svg"));
-      this.zoom = d3.zoom().scaleExtent([0.9, 4.5]).on("zoom", ()=>{
+      this.zoom = d3.zoom().scaleExtent([0.9, 6.0]).on("zoom", ()=>{
         queries.forEach(query=>{
           d3.select(query).attr("transform", d3.event.transform);
         });
@@ -243,7 +243,7 @@ export default {
         .selectAll("ellipse.icon-shadow")
         .attr("rx", 20)
         .attr("ry", 10)
-        .attr("opacity", 0.4)
+        .attr("opacity", 0.2)
         .attr("transform", d=>{
           const scale = 0.5 * (1/this.zoomScale);
           let coord = this.projection([d.lng, d.lat]);
@@ -267,7 +267,10 @@ export default {
           coord[0] -= pathCentroid[0]*scale;
           coord[1] -= pathCentroid[1]*scale;
           return `translate(${coord}) scale(${scale})`;
-        });
+        })
+        .on("click", d=>{
+          console.log(d);
+        })
     },
     focusSelectedIcon(name, selection, unselectColor, selectColor) {
       let pathCentroid = [0, 0];
@@ -302,7 +305,7 @@ export default {
   },
   watch: {
     searchedHouses(houses) {
-      this.drawHouseIcons();
+      this.drawIconsBySelectedMenu(this.selectedMenu);
     },
     selectedHouse(house) {
       this.focusSelectedIcon(house.name, "path.home-icon", config.UNSELECTED_COLOR, config.SELECTED_COLOR);
