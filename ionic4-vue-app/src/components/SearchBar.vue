@@ -55,12 +55,11 @@ export default {
     margin: 8px;
     flex-grow: 1;
     border-radius: 4px;
-    background: #3c3c3c;
-    border: 0px solid #272727;
+    background: #ffffffd4;
     padding: 7px;
-    color: white;
-    -webkit-box-shadow: 0px 1px 3px #4a4a4a;
-    box-shadow: 0px 1px 3px #4a4a4a;
+    color: #0d1119;
+    -webkit-box-shadow: 0px 1px 3px #969696;
+    box-shadow: 0px 1px 3px #969696;
   }
   span {
     text-align: center;
@@ -70,9 +69,9 @@ export default {
   input {
     flex-grow: 1;
     font-weight: bold;
-    background: #3c3c3c;
+    background: none;
     border: 0;
-    color: white;
+    color: #0d1119;
     padding: 0;
   }
   input:focus {

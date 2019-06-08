@@ -15,7 +15,7 @@
         </div>
         <div class="tel">
           <span>
-            <v-icon name="phone"/>
+            <v-icon name="phone" scale="0.65"/>
             {{center.tel}}
           </span>
           <span>
@@ -71,20 +71,23 @@ export default {
 </script>
 <style scoped>
   .list-view-houses {
-    background-color: #3c3c3c;
+    background-color: #0d1119;
     color: white;
+    font-size: 0.8rem;
   }
   .location {
     font-weight: bold;
   }
   .item {
-    padding: 8px 14px;
+    padding: 3px 10px;
   }
   .item > div {
-    padding-bottom: 8px;
-    border-bottom: 1px solid #535353;
+    background-color: #1b202b;
+    padding: 4px 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px #000000d9;
   }
   .selected {
-    color: #ffe207;
+    color: #5bd2c8;
   }
 </style>

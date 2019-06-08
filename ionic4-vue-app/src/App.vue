@@ -5,8 +5,8 @@
     <div class="list-view-bar" :class="{'opened':isOpenHousesListView}">
       <toolbar></toolbar>
       <list-view-houses v-show="selectedMenu===0" class="list-view-wrapper"></list-view-houses>
-      <list-view-fitness-centers v-show="selectedMenu===1" class="list-view-wrapper"></list-view-fitness-centers>
-      <list-view-vacation-spots v-show="selectedMenu===2" class="list-view-wrapper"></list-view-vacation-spots>
+      <list-view-vacation-spots v-show="selectedMenu===1" class="list-view-wrapper"></list-view-vacation-spots>
+      <list-view-fitness-centers v-show="selectedMenu===2" class="list-view-wrapper"></list-view-fitness-centers>
     </div>
     <bottom-menu></bottom-menu>
   </div>
@@ -120,9 +120,6 @@ export default {
     margin: 0;
     height: 100%;
     width: 100%;
-  }
-  body {
-    background-color: #4c4c4c;
   }
   #main {
     display: flex;

@@ -53,9 +53,9 @@ export default {
     padding: 5px 15px;
     align-items: center;
     justify-content: space-between;
-    background-color: #3c3c3c;
+    background-color: #0d1119;
     color: white;
-    border-bottom: 1px solid #535353;
+    /* border-bottom: 1px solid #535353; */
     box-shadow: 0px -1px 5px #4a4a4a;
   }
   .list-contents .title {

@@ -1,14 +1,18 @@
 <template>
   <div class="map-south-korea">
-    <svg
-      :viewBox="viewBox">
-      <g class="south-korea">
-      </g>
-      <g class="buliding-container">
-      </g>
-      <g class="label-container">
-      </g>
+    <svg :viewBox="viewBox">
+      <g class="south-korea"></g>
+      <g class="buliding-container"></g>
+      <g class="label-container"></g>
     </svg>
+    <div class="zoom-buttons">
+      <span @click="zoomIn()">
+        <v-icon name="plus" scale="0.8"/>
+      </span>
+      <span @click="zoomOut()">
+        <v-icon name="minus" scale="0.8"/>
+      </span>
+    </div>
   </div>
 </template>
 <script>
@@ -33,6 +37,7 @@ export default {
       topology: null,
       projection: null,
       path: null,
+      zoom: null,
       pathShadow: null,
       elements: {},
       housesJSON,
@@ -65,6 +70,7 @@ export default {
   },
   computed: {
     ...mapState({
+      'selectedMenu' : state => state.common.selectedMenu,
       'selectedHouse' : state => state.houses.selectedHouse,
       'searchedHouses' : state => state.houses.searchedHouses,
       'selectedVacationSpot' : state => state.vacation_spot.selectedVacationSpot,
@@ -105,7 +111,7 @@ export default {
     },
     initZoomEvent(queries) {
       const svg = d3.select(this.$el.querySelector("svg"));
-      const zoom = d3.zoom().scaleExtent([0.9, 4.5]).on("zoom", ()=>{
+      this.zoom = d3.zoom().scaleExtent([0.9, 4.5]).on("zoom", ()=>{
         queries.forEach(query=>{
           d3.select(query).attr("transform", d3.event.transform);
         });
@@ -114,16 +120,12 @@ export default {
           this.drawMap();
         }
       });
-      svg.call(zoom);
-      //시작할때 확대되면서 시작
-      // zoom.scaleBy(svg.transition().duration(500), 2.0);
+      svg.call(this.zoom);
     },
     drawMap() {
       this.drawGround();
       this.drawRegionLabel();
-      this.drawHouseIcons();
-      this.drawVacationSpotIcons();
-      this.drawFitnessCenterIcons();
+      this.drawIconsBySelectedMenu(this.selectedMenu);
     },
     drawGround() {
       const features = this.provinces.topology.features;
@@ -178,6 +180,21 @@ export default {
 
       texts.raise();
     },
+    drawIconsBySelectedMenu(menu) {
+      d3.select(".buliding-container").selectAll("path").remove();
+      d3.select(".buliding-container").selectAll("ellipse").remove();
+      switch(menu) {
+        case config.MENU_HOUSE:
+            this.drawHouseIcons();
+          break;
+        case config.MENU_HOTEL:
+            this.drawVacationSpotIcons();
+          break;
+        case config.MENU_FITNESS_CENTER:
+            this.drawFitnessCenterIcons();
+          break;
+      }
+    },
     drawVacationSpotIcons() {
       this.drawIcons({
         'className': 'hotel-icon',
@@ -186,7 +203,7 @@ export default {
       });
 
       if (this.selectedVacationSpot) {
-        this.focusSelectedIcon(this.selectedVacationSpot.name, "path.hotel-icon", "#f52462", "#f34416");
+        this.focusSelectedIcon(this.selectedVacationSpot.name, "path.hotel-icon", config.UNSELECTED_COLOR, config.SELECTED_COLOR);
       }
     },
     drawFitnessCenterIcons() {
@@ -197,7 +214,7 @@ export default {
       });
 
       if (this.selectedFitnessCenter) {
-        this.focusSelectedIcon(this.selectedFitnessCenter.name, "path.dumbbel-icon", "#f52462", "#f34416");
+        this.focusSelectedIcon(this.selectedFitnessCenter.name, "path.dumbbel-icon", config.UNSELECTED_COLOR, config.SELECTED_COLOR);
       }
     },
     drawHouseIcons() {
@@ -208,7 +225,7 @@ export default {
       });
 
       if (this.selectedHouse) {
-        this.focusSelectedIcon(this.selectedHouse.name, "path.home-icon", "#f52462", "#f34416");
+        this.focusSelectedIcon(this.selectedHouse.name, "path.home-icon", config.UNSELECTED_COLOR, config.SELECTED_COLOR);
       }
     },
     drawIcons({className, data, path}) {
@@ -238,7 +255,7 @@ export default {
       d3.select(".buliding-container")
         .selectAll(`path.${className}`)
         .attr("name", d=>d.name)
-        .attr("fill", "#f52462") 
+        .attr("fill", config.UNSELECTED_COLOR) 
         .attr("d", path) /* 아이콘 path (by awesome font) */
         .each(function(d, i) {
           const bbox = this.getBBox();
@@ -261,7 +278,7 @@ export default {
           pathCentroid = [bbox.x + bbox.width/2, bbox.y + bbox.height/2];
         })
         .attr("transform", d=>{
-          const defaultScale = d.name === name ? 0.05 : 0.03;
+          const defaultScale = d.name === name ? 0.04 : 0.03;
           const scale = defaultScale * (1/this.zoomScale);
           let coord = this.projection([d.lng, d.lat]);
           coord[0] -= pathCentroid[0]*scale;
@@ -273,6 +290,14 @@ export default {
       if (icon) {
         icon.raise();
       }
+    },
+    zoomIn() {
+      const svg = d3.select(this.$el.querySelector("svg"));
+      this.zoom.scaleBy(svg.transition().duration(500), 1.5);
+    },
+    zoomOut() {
+      const svg = d3.select(this.$el.querySelector("svg"));
+      this.zoom.scaleBy(svg.transition().duration(500), 0.5);
     }
   },
   watch: {
@@ -280,13 +305,16 @@ export default {
       this.drawHouseIcons();
     },
     selectedHouse(house) {
-      this.focusSelectedIcon(house.name, "path.home-icon", "#f52462", "#f34416");
+      this.focusSelectedIcon(house.name, "path.home-icon", config.UNSELECTED_COLOR, config.SELECTED_COLOR);
     },
     selectedVacationSpot(spot) {
-      this.focusSelectedIcon(spot.name, "path.hotel-icon", "#f52462", "#f34416");
+      this.focusSelectedIcon(spot.name, "path.hotel-icon", config.UNSELECTED_COLOR, config.SELECTED_COLOR);
     },
     selectedFitnessCenter(center) {
-      this.focusSelectedIcon(center.name, "path.dumbbel-icon", "#f52462", "#f34416");
+      this.focusSelectedIcon(center.name, "path.dumbbel-icon", config.UNSELECTED_COLOR, config.SELECTED_COLOR);
+    },
+    selectedMenu(menu) {
+      this.drawIconsBySelectedMenu(menu);
     }
   }
 }
@@ -300,6 +328,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #9fc7d8;
   }
   .south-korea >>> .map-path {
     fill: #ffffff;
@@ -322,5 +351,21 @@ export default {
   }
   path {
     transition: all 0.15s ease;
+  }
+  .zoom-buttons {
+    position: fixed;
+    top: 54px;
+    display: flex;
+    left: 8px;
+    flex-direction: column;
+    background-color: #ffffffd4;
+    border-radius: 4px;
+    box-shadow: 0px 1px 3px #969696;
+  }
+  .zoom-buttons span {
+    padding: 5px 10px;
+  }
+  .zoom-buttons span:first-child {
+    border-bottom: 1px solid #d2d2d2;
   }
 </style>

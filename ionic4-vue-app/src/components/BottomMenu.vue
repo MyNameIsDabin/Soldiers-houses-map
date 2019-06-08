@@ -6,7 +6,7 @@
       :class="{'selected':button.idx===selectedMenu}"
       @click="SET_SELECTED_MENU(button.idx)"
       :key="button.idx">
-      <v-icon :name="button.icon" scale="1.5"/>
+      <v-icon :name="button.icon" scale="1.3"/>
       <span>{{button.text}}</span>
     </span>
   </div>
@@ -38,12 +38,12 @@ export default {
     width: 100%;
     align-items: center;
     justify-content: space-evenly;
-    background-color: #3c3c3c;
+    background-color: #0d1119;
     bottom: 0;
     height: 50px;
     color: white;
     z-index: 1;
-    border-top: 1px solid #535353;
+    /* border-top: 1px solid #535353; */
   }
   .button {
     display: flex;
@@ -57,7 +57,7 @@ export default {
     font-size: 0.7rem;
   }
   .selected {
-    color: #ffe207;
+    color: #5bd2c8;
     transition: all 0.4s cubic-bezier(0.07, 0.38, 0.04, 1.28);
   }
 </style>
