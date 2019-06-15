@@ -19,7 +19,7 @@
 import * as d3 from 'd3'
 import * as topojson from 'topojson'
 import * as config from '../config'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import housesJSON from '@/assets/data/house_sample.json';
 
 export default {
@@ -73,10 +73,13 @@ export default {
       'selectedMenu' : state => state.common.selectedMenu,
       'selectedHouse' : state => state.houses.selectedHouse,
       'searchedHouses' : state => state.houses.searchedHouses,
+      'slicedHouses' : state => state.houses.slicedHouses,
       'selectedVacationSpot' : state => state.vacation_spot.selectedVacationSpot,
       'searchedVacationSpots' : state => state.vacation_spot.searchedVacationSpots,
+      'slicedVacationSpots' : state => state.vacations_spot.slicedVacationSpots,
       'selectedFitnessCenter' : state => state.fitness_center.selectedFitnessCenter,
       'searchedFitnessCenters' : state => state.fitness_center.searchedFitnessCenters,
+      'slicedFitnessCenters' : state => state.fitness_center.slicedFitnessCenters,
     }),
     viewBox() {
       return `0 0 ${this.width} ${this.height}`;
@@ -90,6 +93,7 @@ export default {
     this.drawMap();
   },
   methods: {
+    ...mapMutations(['SET_FOCUSED_HOUSE', 'SET_SELECTED_HOUSE']),
     init() {
       this.provinces.topology = topojson.feature(
         this.provinces.jsonContents, 
@@ -269,8 +273,9 @@ export default {
           return `translate(${coord}) scale(${scale})`;
         })
         .on("click", d=>{
-          console.log(d);
-        })
+          this.SET_FOCUSED_HOUSE(d);
+          this.focusIcon(d.name);
+        });
     },
     focusSelectedIcon(name, selection, unselectColor, selectColor) {
       let pathCentroid = [0, 0];
@@ -292,6 +297,19 @@ export default {
       const icon = d3.select(`${selection}[name="${name}"]`);
       if (icon) {
         icon.raise();
+      }
+    },
+    focusIcon(name) {
+      switch(this.selectedMenu) {
+        case config.MENU_HOUSE: 
+            this.focusSelectedIcon(name, "path.home-icon", config.UNSELECTED_COLOR, config.SELECTED_TEMP_COLOR);
+          break;
+        case config.MENU_HOTEL:
+            this.focusSelectedIcon(name, "path.hotel-icon", config.UNSELECTED_COLOR, config.SELECTED_TEMP_COLOR);
+          break;
+        case config.MENU_FITNESS_CENTER:
+            this.focusSelectedIcon(name, "path.dumbbel-icon", config.UNSELECTED_COLOR, config.SELECTED_TEMP_COLOR);
+          break;
       }
     },
     zoomIn() {

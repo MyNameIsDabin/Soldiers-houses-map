@@ -3,6 +3,7 @@ import houseJSON from '@/assets/data/house_sample.json';
 
 const state = {
   houses: houseJSON.reverse(),
+  focusedHouse: null,
   selectedHouse: null,
   searchedHouses: [],
   slicedHouses: []    //위의 검색된 분양목록(searchedHouses) 에서 10개씩 뽑아서 리스트뷰에 표츌할 것
@@ -12,6 +13,9 @@ const mutations = {
   SET_HOUSES(state, payload) {
     Vue.set(state, 'houses', payload);
   },  
+  SET_FOCUSED_HOUSE(state, payload) {
+    Vue.set(state, 'focusedHouse', payload);
+  },
   SET_SELECTED_HOUSE(state, payload) {
     Vue.set(state, 'selectedHouse', payload);
   },

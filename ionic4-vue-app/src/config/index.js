@@ -15,5 +15,6 @@ export const MENU_LIST = [{
     idx: MENU_FITNESS_CENTER
   }
 ];
+export const SELECTED_TEMP_COLOR = 'white';
 export const SELECTED_COLOR = 'crimson';
-export const UNSELECTED_COLOR = 'white';
+export const UNSELECTED_COLOR = '#374965';

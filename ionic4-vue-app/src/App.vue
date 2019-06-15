@@ -4,11 +4,12 @@
     <map-south-korea :width="320" :height="568"></map-south-korea>
     <div class="list-view-bar" :class="{'opened':isOpenHousesListView}">
       <toolbar></toolbar>
-      <list-view-houses v-show="selectedMenu===0" class="list-view-wrapper"></list-view-houses>
+      <list-view-houses v-show="selectedMenu===0" class="list-view-wrapper"></list-view-houses> 
       <list-view-vacation-spots v-show="selectedMenu===1" class="list-view-wrapper"></list-view-vacation-spots>
       <list-view-fitness-centers v-show="selectedMenu===2" class="list-view-wrapper"></list-view-fitness-centers>
     </div>
     <bottom-menu></bottom-menu>
+    <info-view></info-view>
   </div>
 </template>
 <script>
@@ -23,12 +24,13 @@ import ListViewHouses from '@/components/ListViewHouses.vue'
 import ListViewFitnessCenters from '@/components/ListViewFitnessCenters.vue'
 import ListViewVacationSpots from '@/components/ListViewVacationSpots.vue'
 import BottomMenu from '@/components/BottomMenu'
+import InfoView from '@/components/InfoView'
 
 // import datas from '@/assets/data/datas.json';
 export default {
   name: 'App',
   components : {
-    MapSouthKorea, SearchBar, Toolbar, ListViewHouses, ListViewFitnessCenters, ListViewVacationSpots, BottomMenu
+    MapSouthKorea, SearchBar, Toolbar, ListViewHouses, ListViewFitnessCenters, ListViewVacationSpots, BottomMenu, InfoView
   },
   data () {
     return {
