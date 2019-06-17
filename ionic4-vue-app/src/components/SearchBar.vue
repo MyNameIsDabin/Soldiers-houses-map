@@ -41,6 +41,7 @@ export default {
 </script>
 <style scoped>
   div.searchbar {
+    top: 0px;
     width: 100%;
     position: fixed;
     display: flex;

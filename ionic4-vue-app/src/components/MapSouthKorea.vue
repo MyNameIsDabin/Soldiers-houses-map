@@ -121,8 +121,11 @@ export default {
         });
         if (this.zoomScale !== d3.event.transform.k) {
           this.zoomScale = d3.event.transform.k;
-          this.drawMap();
+          this.drawMap(); 
         }
+      })
+      .on("end", ()=>{
+        // this.drawMap(); // 모바일에서 퍼포먼스 이슈가 있어서 end에 넣었음. transform < 너무 느림.
       });
       svg.call(this.zoom);
     },
@@ -136,12 +139,11 @@ export default {
 
       let paths = d3.select(".south-korea").selectAll("path.ground").data(features);
       paths.exit().remove();
-      paths.enter().append("path").attr("class", "ground");
+      paths.enter().append("path").attr("class", "ground").attr("d", this.path);
       paths = d3.select(".south-korea")
         .selectAll("path.ground")
         .attr("class", "map-path ground")
-        .attr("stroke-width", `${1.1*(1/this.zoomScale)}px`)
-        .attr("d", this.path);
+        .attr("stroke-width", `${1.1*(1/this.zoomScale)}px`);
     },
     drawRegionLabel() {
       const features = this.provinces.topology.features;
@@ -166,11 +168,11 @@ export default {
 
       let rects = d3.select(".label-container").selectAll("rect").data(features);
       rects.exit().remove();
-      rects.enter().append("rect");
+      rects.enter().append("rect")
+        .attr("rx", 5)
+        .attr("ry", 5);
       rects = d3.select(".label-container")
         .selectAll("rect")
-        .attr("rx", 5)
-        .attr("ry", 5)
         .attr("width", (d, i)=>textWidth[i])
         .attr("height", 15)
         .attr("transform", (d, i)=>{
@@ -238,16 +240,20 @@ export default {
       const iconPaths = d3.select(".buliding-container").selectAll(`path.${className}`).data(data);
 
       shadows.exit().remove();
-      shadows.enter().append("ellipse").attr("class", `icon-shadow ${className}`);
+      shadows.enter().append("ellipse")
+        .attr("class", `icon-shadow ${className}`)
+        .attr("rx", 20)
+        .attr("ry", 10)
+        .attr("opacity", 0.2);
 
       iconPaths.exit().remove();
-      iconPaths.enter().append("path").attr("class", className);
+      iconPaths.enter().append("path")
+        .attr("class", className)
+        .attr("fill", config.UNSELECTED_COLOR)
+        .attr("d", path);
 
       d3.select(".buliding-container")
         .selectAll("ellipse.icon-shadow")
-        .attr("rx", 20)
-        .attr("ry", 10)
-        .attr("opacity", 0.2)
         .attr("transform", d=>{
           const scale = 0.5 * (1/this.zoomScale);
           let coord = this.projection([d.lng, d.lat]);
@@ -259,8 +265,6 @@ export default {
       d3.select(".buliding-container")
         .selectAll(`path.${className}`)
         .attr("name", d=>d.name)
-        .attr("fill", config.UNSELECTED_COLOR) 
-        .attr("d", path) /* 아이콘 path (by awesome font) */
         .each(function(d, i) {
           const bbox = this.getBBox();
           pathCentroid = [bbox.x + bbox.width/2, bbox.y + bbox.height/2];
